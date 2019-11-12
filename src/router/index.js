@@ -11,9 +11,17 @@ var router = new Router({
     path: '/home',
     name: 'Home',
     component: () =>
-      import ('../components/Home/home.vue'),
+      import ('../views/Home/home.vue'),
     meta: {
       title: '首页'
+    }
+  },{
+    path: '/visitor',
+    name: 'Visitor',
+    component: () =>
+      import ('../views/Visitor/visitor.vue'),
+    meta: {
+      title: '访客分析'
     }
   },]
 

@@ -55,6 +55,12 @@
   margin-right: 20px;
 }
 
+/*上传*/
+.up-file .el-upload{
+  display: flex;
+  justify-content: flex-start;
+}
+
 .el-badge__content.is-fixed {
   position: absolute;
   top: 11px !important;
@@ -242,4 +248,9 @@ a {
   width: 11.5%;
   margin-right: 1%;
   box-sizing: border-box;
+}
+
+.tag-Opt{
+  min-width: 6%;
+  margin-right: 3.5%;
 }
