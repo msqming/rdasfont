@@ -17,7 +17,7 @@ var router = new Router({
     }
   },{
     path: '/visitor',
-    name: 'Visitor',
+    name: 'visitor',
     component: () =>
       import ('views/visitor/Visitor.vue'),
     meta: {

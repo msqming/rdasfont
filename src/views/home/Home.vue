@@ -386,7 +386,7 @@
 <script>
     import { parseTime } from "../../common/utils/setMethods.js";
     import { json2excel } from "../../common/utils/setMethods.js";
-    import subTable from '../../components/table/subTable';
+    import subTable from '../../components/table/SubTable';
     export default {
         name: "home",
         components:{
