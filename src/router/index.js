@@ -11,7 +11,7 @@ var router = new Router({
     path: '/home',
     name: 'Home',
     component: () =>
-      import ('../views/Home/home.vue'),
+      import ('views/home/Home.vue'),
     meta: {
       title: '首页'
     }
@@ -19,7 +19,7 @@ var router = new Router({
     path: '/visitor',
     name: 'Visitor',
     component: () =>
-      import ('../views/Visitor/visitor.vue'),
+      import ('views/visitor/Visitor.vue'),
     meta: {
       title: '访客分析'
     }

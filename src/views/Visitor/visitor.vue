@@ -322,7 +322,8 @@
     <div class="uploadSmall bg-cyan "
          :class="uploadShow?'animate-small':''"
          @click="showUpload()">
-      <div class="flex align-center justify-center" style="height: 100%"><span>{{uploadNum==fileList.length?'已完成':'上传中'}}</span></div>
+      <div class="flex align-center justify-center" style="height: 100%"><span>{{uploadNum==fileList.length?'已完成':'上传中'}}</span>
+      </div>
     </div>
 
     <!--    管理弹窗-->
@@ -349,7 +350,8 @@
           label="操作"
           width="100">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="deleteRow(scope.$index, manageList)" type="text" size="small">删除</el-button>
+            <el-button @click.native.prevent="deleteRow(scope.$index, manageList)" type="text" size="small">删除
+            </el-button>
             <!--            <el-button type="text" size="small">编辑</el-button>-->
           </template>
         </el-table-column>
@@ -378,7 +380,7 @@
                 id: 2
             }]
             return {
-                manageList:[],//管理列表数据
+                manageList: [],//管理列表数据
                 uploadNum: 0,//已上传文件个数
                 tableData: [],
                 orderHight: 1000,
@@ -441,7 +443,7 @@
                 this.$axios.post('/api/v1/uploadlog/', data).then(res => {
                     loading.close()
                     console.log(res)
-                    if(res.status==200){
+                    if (res.status == 200) {
                         this.manageList = res.data.data
                     }
                 }).catch(res => {
@@ -450,21 +452,21 @@
             },
 
             // 删除管理数据
-            deleteRow(idx, rows){
-                console.log(idx,rows)
+            deleteRow(idx, rows) {
+                console.log(idx, rows)
                 let tabId;
-                this.manageList.forEach((item,index)=>{
-                    if(index==idx){
+                this.manageList.forEach((item, index) => {
+                    if (index == idx) {
                         tabId = item.id
                     }
                 })
                 console.log(tabId)
-                let pram = {tabId:tabId}
-                this.$axios.delete('/api/v1/uploadlog/',{data:pram}).then(res=>{
-                    if(res.status==200){
+                let pram = {tabId: tabId}
+                this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
+                    if (res.status == 200) {
                         rows.splice(idx, 1);
                     }
-                }).catch(res=>{
+                }).catch(res => {
                     console.log(res)
                 })
             },
@@ -613,7 +615,6 @@
                 console.log(e)
             },
 
-
             // 自定义上传资料
             submitFile(data) {
                 var i = 0;
@@ -689,7 +690,6 @@
                 let day = new Date();
                 day = parseTime(day)
                 let dateName = `模块名第${1}页 ${day}`
-
                 let newArr = []
                 let newArr2 = []
                 for (let i in arr) {
@@ -713,8 +713,8 @@
             },
 
             // 获取访客分析数据
-            getvisitor(){
-                const that= this;
+            getvisitor() {
+                const that = this;
                 const loading = this.$loading({
                     lock: true,
                     text: '努力加载中...',
@@ -736,19 +736,18 @@
                                 obj.prop = 'id';
                                 obj.type = 'normal';
 
-                            } else if(i !='create_date'&&i !='filetabinfo'&&i !='last_date'){
+                            } else if (i != 'create_date' && i != 'filetabinfo' && i != 'last_date') {
                                 obj.label = i;
                                 obj.prop = i;
                                 obj.type = 'normal';
                             }
                             arr.push(obj)
                         }
-
                         // arr.splice(-1, 1)//把多余的一项去掉
 
                         // 再次进行改造
                         for (let i in res.data.title) {
-                            if (i != 0 && i!=7&& i!=8&& i!=9) {
+                            if (i != 0 && i != 7 && i != 8 && i != 9) {
                                 arr[i].label = res.data.title[i]
                             }
                         }
@@ -759,8 +758,6 @@
                     loading.close();
                 })
             },
-
-
         },
 
         created() {
@@ -775,11 +772,10 @@
             // document.getElementById('order-list').style.height = orderHight + 'px'
         }
 
-
     }
 </script>
 
 <style scoped>
-  @import './visitor.css';
+  @import 'Visitor.css';
 </style>
 
