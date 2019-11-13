@@ -3,45 +3,8 @@
     <el-container style="height: 100%; border: 1px solid #eee;overflow-y: auto">
 
       <el-header class=" bg-black" height="141px" style="padding-right: 0;">
-        <div class="flex flex-sub justify-between bg-black">
-          <div class="extra-large bg-black text-white text-blod text-center head-icon">数据分析系统
-          </div>
-
-          <div class="flex flex-sub justify-end header-right bg-black">
-            <div class="flex align-center ">
-              <el-dropdown class="head-drop">
-                <el-badge value="new" class="item">
-                  <i class="el-icon-message-solid text-white large" style="margin-right: 15px"></i>
-                </el-badge>
-                <el-dropdown-menu slot="dropdown">
-
-                  <el-dropdown-item class="clearfix">
-                    查看
-                    <el-badge class="mark" :value="12"/>
-                  </el-dropdown-item>
-
-                  <el-dropdown-item class="clearfix">
-                    通知
-                    <el-badge class="mark" :value="12"/>
-                  </el-dropdown-item>
-
-                  <el-dropdown-item class="clearfix">
-                    日志
-                    <el-badge class="mark" :value="12"/>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <div class="flex align-center justify-center margin-right-xs">
-                <el-avatar :size="40" src="https://empty" @error="errorHandler">
-                  <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-                </el-avatar>
-                <span class="text-cut margin-lr-xs text-white">用户名啊啊啊啊</span>
-              </div>
-
-              <span class="exit padding-right text-white" onselectstart="return false;" unselectable="on">退出登录</span>
-            </div>
-          </div>
-        </div>
+      <!--  顶部信息-->
+        <DBheader></DBheader>
         <!--          导航栏-->
         <el-menu
           :default-active="activeIndex2"
@@ -52,11 +15,11 @@
           text-color="#fff"
           active-text-color="#ffd04b"
         >
-          <el-menu-item index="首页">首页</el-menu-item>
+          <el-menu-item index="1">首页</el-menu-item>
           <el-submenu index="数据中心">
             <template slot="title">数据中心</template>
 
-            <el-submenu index="电商平台数据">
+            <el-submenu index="2">
               <template slot="title">电商平台数据</template>
               <el-menu-item index="淘宝 / 天猫">
                 <el-submenu index="2-1-1-1">
@@ -88,33 +51,9 @@
           </div>
         </el-header>
         <el-container :style="{'height':orderHight+'px'}">
+        <!--  侧边栏-->
           <el-aside width="300px" class="sidebar" :style="{'height':'85%','background-color':' #F2F6FC'}">
-            <div class="padding-xs padding-top-sm padding-bottom-sm sidebar-item" v-for="(items,index) in 10"
-                 :key="index">
-              <div class="sidebar-item-title large margin-bottom-sm">标题头 <i
-                class="el-icon-arrow-right margin-left-xs large"></i>
-              </div>
-
-              <div class="flex sidebar-item-son">
-                <div class="flex-sub text-cut padding-lr-xs text-center" v-for="(item,index) in 3" :key="index"><a
-                  href="#"
-                  class="sidebar-item-son-item pointer">子节点</a>
-                </div>
-              </div>
-
-              <div class="sub-menu-box" :style="{'height':orderHight+'px'}">
-                <div class="sub-menu">
-                  <div class="large text-blod sub-menu-title margin-bottom-sm">標題頭</div>
-                  <div class="flex flex-wrap base sub-menu-list">
-                    <div class="margin-bottom-sm sub-menu-item" style="width: 50%" v-for="(item,index) in 6"
-                         :key="index">
-                      123132
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <Sidebar :sideData="sideData" :orderHight="orderHight" @getcur="getcurId"></Sidebar>
           </el-aside>
           <el-main :style="{'height':'96%'}">
 
@@ -384,13 +323,17 @@
 </template>
 
 <script>
-    import { parseTime } from "../../common/utils/setMethods.js";
-    import { json2excel } from "../../common/utils/setMethods.js";
-    import subTable from '../../components/table/SubTable';
+    import { parseTime } from "common/utils/setMethods.js";
+    import { json2excel } from "common/utils/setMethods.js";
+    import subTable from 'components/table/SubTable';
+    import Sidebar from 'components/sidebar/Sidebar';
+    import DBheader from 'components/header/DBheader';
     export default {
         name: "home",
         components:{
-            subTable
+            subTable,
+            Sidebar,
+            DBheader
         },
         data() {
 
@@ -401,7 +344,67 @@
                 name: 'dachui1',
                 id: 2
             }]
+
+            const sideData = [{
+                title:'aaa',
+                bestList:[{
+                    id:0,
+                    name:'大厦1'
+                },{
+                    id:1,
+                    name:'大厦2'
+                },{
+                    id:2,
+                    name:'大厦3'
+                }],
+                moreList:[{
+                    id:3,
+                    name:'大厦4'
+                },{
+                    id:4,
+                    name:'大厦5'
+                },{
+                    id:5,
+                    name:'大厦6'
+                },{
+                    id:6,
+                    name:'大厦7'
+                },{
+                    id:7,
+                    name:'大厦8'
+                }]
+            },{
+                title:'bbb',
+                bestList:[{
+                    id:0,
+                    name:'大厦1'
+                },{
+                    id:1,
+                    name:'大厦2'
+                },{
+                    id:2,
+                    name:'大厦3'
+                }],
+                moreList:[{
+                    id:3,
+                    name:'大厦4'
+                },{
+                    id:4,
+                    name:'大厦5'
+                },{
+                    id:5,
+                    name:'大厦6'
+                },{
+                    id:6,
+                    name:'大厦7'
+                },{
+                    id:7,
+                    name:'大厦8'
+                }]
+            }]
+
             return {
+                sideData:sideData,//侧边栏数据
                 uploadNum:0,//已上传文件个数
                 tableData: [],
                 orderHight: 1000,
@@ -442,8 +445,11 @@
             }
         },
         methods: {
-            errorHandler() {
-                return true
+
+
+            // 获取当前侧边栏点击的参数
+            getcurId(e){
+                alert('Hi, ' + e)
             },
 
             // 导航栏选择

@@ -465,6 +465,8 @@
                 this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
                     if (res.status == 200) {
                         rows.splice(idx, 1);
+                    } else {
+                        this.$message.error(`操作失败,错误代码为：${res.msg}`);
                     }
                 }).catch(res => {
                     console.log(res)
@@ -623,7 +625,7 @@
                 let params = new FormData(); //创建form对象
                 params.append('file', data.file);//通过append向form对象添加数据
                 params.append('fileType', data.file.type);//通过append向form对象添加数据
-                params.append('fileSize', data.file.size);//通过append向form对象添加数据
+                // params.append('fileSize', data.file.size);//通过append向form对象添加数据
                 params.append('fileName', data.file.name);//添加form表单中其他数据
                 params.append('platform', '天猫');//添加form表单中其他数据
                 params.append('shop', '惠普儒韵官旗店');//添加form表单中其他数据
@@ -637,17 +639,21 @@
                         data.onProgress({percent: percent})
                     },
                 };  //添加请求头
-                this.$axios.post('/storage/flow/', params, config)//上传图片
+                this.$axios.post('/storage/flow/', params, config)//上传文件
                     .then(response => {
-                        data.onSuccess(response.data)
-                        this.uploadNum++;
-                        // 判断是否全部上传完
-                        if (this.uploadNum == this.fileList.length) {
-                            this.$message({
-                                showClose: true,
-                                message: '文件已上传完成',
-                                type: 'success'
-                            });
+                        if (response.status == 200) {
+                            data.onSuccess(response.data)
+                            this.uploadNum++;
+                            // 判断是否全部上传完
+                            if (this.uploadNum == this.fileList.length) {
+                                this.$message({
+                                    showClose: true,
+                                    message: '文件已上传完成',
+                                    type: 'success'
+                                });
+                            }
+                        }else{
+                            this.$message.error(`文件上传失败，错误码为：${response.status}`);
                         }
                     })
                     .catch(({err}) => {
