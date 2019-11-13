@@ -634,7 +634,7 @@
                         data.onProgress({percent: percent})
                     },
                 };  //添加请求头
-                this.$axios.post('/storage/flowarea/', params, config)//上传图片
+                this.$axios.post('/storage/flow/', params, config)//上传图片
                     .then(response => {
                         data.onSuccess(response.data)
                         this.uploadNum++;
