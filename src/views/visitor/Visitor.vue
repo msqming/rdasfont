@@ -625,6 +625,9 @@
                 params.append('fileType', data.file.type);//通过append向form对象添加数据
                 params.append('fileSize', data.file.size);//通过append向form对象添加数据
                 params.append('fileName', data.file.name);//添加form表单中其他数据
+                params.append('platform', '天猫');//添加form表单中其他数据
+                params.append('shop', '惠普儒韵官旗店');//添加form表单中其他数据
+                params.append('user', 'admin');//添加form表单中其他数据
                 let config = {
                     headers: {'Content-Type': 'multipart/form-data'},
                     onUploadProgress: progressEvent => {
