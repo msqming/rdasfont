@@ -1,3 +1,4 @@
+<!--头部组件-->
 <template>
   <div class="flex flex-sub justify-between bg-black">
     <div class="extra-large bg-black text-white text-blod text-center head-icon">数据分析系统

@@ -1,3 +1,4 @@
+<!--数据表格组件-->
 <template>
   <!--              表格-->
   <el-table class="margin-top-sm" :data="tableData" style="width: 100%" max-height="400"
@@ -17,65 +18,64 @@
     <template v-for="(item,index) in arr">
 
       <el-table-column :prop="item.prop" :label="item.label" :key="index" :width="index==0?60:''"
-                       v-if="item.type==='normal'" :sortable="item.prop === sorts?true:false" resizable show-overflow-tooltip>
+                       v-if="item.type==='normal'" :sortable="item.prop === sorts?true:false" resizable
+                       show-overflow-tooltip>
 
       </el-table-column>
-      <el-table-column slot-scope="scope" ></el-table-column>
+      <el-table-column slot-scope="scope"></el-table-column>
     </template>
-<!--    <el-table-column-->
-<!--      fixed="right"-->
-<!--      label="操作"-->
-<!--      width="100">-->
-<!--      <template slot-scope="scope">-->
-<!--        <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>-->
-<!--        &lt;!&ndash;            <el-button type="text" size="small">编辑</el-button>&ndash;&gt;-->
-<!--      </template>-->
-<!--    </el-table-column>-->
+    <!--    <el-table-column-->
+    <!--      fixed="right"-->
+    <!--      label="操作"-->
+    <!--      width="100">-->
+    <!--      <template slot-scope="scope">-->
+    <!--        <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>-->
+    <!--        &lt;!&ndash;            <el-button type="text" size="small">编辑</el-button>&ndash;&gt;-->
+    <!--      </template>-->
+    <!--    </el-table-column>-->
   </el-table>
 </template>
 
 <script>
-    export default {
-        name: "subTable",
-        data() {
-            return{
-                sortable:'',
-                // sorts:'date'
-            }
-        },
-        props: {
-            tableData: {
-                type: Array,
-                default: []
-            },
-            arr: {
-                type: Array,
-                default: []
-            },
-            sorts:{
-                type:String,
-                default: 'id'
-            }
+  export default {
+    name: "subTable",
+    data() {
+      return {
+        sortable: '',
+        // sorts:'date'
+      }
+    },
+    props: {
+      tableData: {
+        type: Array,
+        default: []
+      },
+      arr: {
+        type: Array,
+        default: []
+      },
+      sorts: {
+        type: String,
+        default: 'id'
+      }
 
-        },
-
-
-        mounted() {
-            // 例子
-
-            for(let i in this.arr){
-                if(this.arr[i].prop==='date'){
-                    this.sortType = true
-                }else{
-                    this.sortType = false
-                }
-            }
-            // this.sorts = 'date';//决定控制列的排序
+    },
 
 
+    mounted() {
+      // 例子
 
+      for (let i in this.arr) {
+        if (this.arr[i].prop === 'date') {
+          this.sortType = true
+        } else {
+          this.sortType = false
         }
+      }
+      // this.sorts = 'date';//决定控制列的排序
+
     }
+  }
 </script>
 
 <style scoped>

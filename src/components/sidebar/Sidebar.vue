@@ -1,14 +1,16 @@
+<!--自定义侧边栏组件-->
 <template>
   <div class="sidebar-list">
     <div class="padding-xs padding-top-sm padding-bottom-sm sidebar-item" v-for="(items,index) in sideData"
          :key="index">
       <div class="sidebar-item-title large margin-bottom-sm">{{items.title}} <i
-        class="el-icon-arrow-right margin-left-xs large"></i>
+          class="el-icon-arrow-right margin-left-xs large"></i>
       </div>
 
       <div class="flex sidebar-item-son">
-        <div class="flex-sub text-cut padding-lr-xs text-center" v-for="(item,index) in items.bestList" :key="index"  ><span
-          class="sidebar-item-son-item pointer" @click="getSubData" :data-id="item.id">{{item.name}}</span>
+        <div class="flex-sub text-cut padding-lr-xs text-center" v-for="(item,index) in items.bestList"
+             :key="index"><span
+            class="sidebar-item-son-item pointer" @click="getSubData" :data-id="item.id">{{item.name}}</span>
         </div>
       </div>
 
@@ -28,26 +30,26 @@
 </template>
 
 <script>
-    export default {
-        name: "Sidebar",
-        props: {
-            orderHight: {
-                type: Number,
-                default: 700
-            },
-            sideData:{
-                type: Array,
-                default: []
-            }
-        },
-        methods:{
-            getSubData(e){
-                let id = e.target.dataset.id;
-                console.log(e)
-                this.$emit('getcur',id)
-            }
-        }
+  export default {
+    name: "Sidebar",
+    props: {
+      orderHight: {
+        type: Number,
+        default: 700
+      },
+      sideData: {
+        type: Array,
+        default: []
+      }
+    },
+    methods: {
+      getSubData(e) {
+        let id = e.target.dataset.id;
+        console.log(e)
+        this.$emit('getcur', id)
+      }
     }
+  }
 </script>
 
 <style scoped>

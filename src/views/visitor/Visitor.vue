@@ -44,13 +44,13 @@
         </div>
         <!--          导航栏-->
         <el-menu
-          :default-active="activeIndex2"
-          class="el-menu-demo flex align-end padding-left-xl"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="#545C64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
+            :default-active="activeIndex2"
+            class="el-menu-demo flex align-end padding-left-xl"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545C64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
         >
           <el-menu-item index="首页">首页</el-menu-item>
           <el-submenu index="数据中心">
@@ -92,13 +92,13 @@
             <div class="padding-xs padding-top-sm padding-bottom-sm sidebar-item" v-for="(items,index) in 10"
                  :key="index">
               <div class="sidebar-item-title large margin-bottom-sm">标题头 <i
-                class="el-icon-arrow-right margin-left-xs large"></i>
+                  class="el-icon-arrow-right margin-left-xs large"></i>
               </div>
 
               <div class="flex sidebar-item-son">
                 <div class="flex-sub text-cut padding-lr-xs text-center" v-for="(item,index) in 3" :key="index"><a
-                  href="#"
-                  class="sidebar-item-son-item pointer">子节点</a>
+                    href="#"
+                    class="sidebar-item-son-item pointer">子节点</a>
                 </div>
               </div>
 
@@ -138,10 +138,10 @@
                     <el-button type="primary" @click="openUpLoad()">上传<i class="el-icon-upload el-icon--right"></i>
                     </el-button>
                     <el-button type="warning" @click="toggleManage">管理<i
-                      class="el-icon-setting el-icon--right"></i>
+                        class="el-icon-setting el-icon--right"></i>
                     </el-button>
                     <span class="margin-left-xs log" @click="dialogTableVisible = true"><i
-                      class="el-icon-document"></i> 日志</span>
+                        class="el-icon-document"></i> 日志</span>
                   </div>
                 </div>
               </el-card>
@@ -151,12 +151,12 @@
             <!--          选择切换-->
             <div class=" margin-top-sm">
               <el-menu
-                :default-active="default1"
-                class="el-menu-demo"
-                mode="horizontal"
-                @select="selectSub"
-                text-color="#333"
-                active-text-color="#ffd04b">
+                  :default-active="default1"
+                  class="el-menu-demo"
+                  mode="horizontal"
+                  @select="selectSub"
+                  text-color="#333"
+                  active-text-color="#ffd04b">
                 <el-menu-item :index="item.id.toString()" v-for="(item,index) in navlist" :key="index">{{item.name}}
                 </el-menu-item>
               </el-menu>
@@ -189,20 +189,20 @@
 
                     <div class="margin-left-sm">
                       <el-date-picker
-                        v-model="value1"
-                        type="date"
-                        placeholder="选择起始日期">
+                          v-model="value1"
+                          type="date"
+                          placeholder="选择起始日期">
                       </el-date-picker>
                       ~
                       <el-date-picker
-                        v-model="value2"
-                        type="date"
-                        placeholder="选择结束日期">
+                          v-model="value2"
+                          type="date"
+                          placeholder="选择结束日期">
                       </el-date-picker>
                     </div>
 
                     <el-button type="text" class="margin-left-sm" @click="handleDownload">下载<i
-                      class="el-icon-download el-icon--right"></i>
+                        class="el-icon-download el-icon--right"></i>
                     </el-button>
 
                   </div>
@@ -213,12 +213,12 @@
                   <div class=" margin-top-sm margin-bottom-sm padding-lr-xs "
                        :class="showmore?'flex flex-wrap':'idx-tag'">
                     <el-tag
-                      class=" margin-bottom-sm pointer tag-Opt"
-                      v-for="(item,index) in tags"
-                      :key="index"
-                      :type="item.ischoosed?'success':'warn'"
-                      @click="pickOpt"
-                      :data-id="index"
+                        class=" margin-bottom-sm pointer tag-Opt"
+                        v-for="(item,index) in tags"
+                        :key="index"
+                        :type="item.ischoosed?'success':'warn'"
+                        @click="pickOpt"
+                        :data-id="index"
                     >
                       {{ item.label }} <i class="el-icon-check el-icon--right" v-if="item.ischoosed"></i>
                     </el-tag>
@@ -241,14 +241,14 @@
                 <!--              分页-->
                 <div class="flex justify-center padding-sm">
                   <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="20"
-                    layout=" prev, pager, next"
-                    :total="500"
-                    prev-text="上一页"
-                    next-text="下一页"
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page.sync="currentPage"
+                      :page-size="20"
+                      layout=" prev, pager, next"
+                      :total="500"
+                      prev-text="上一页"
+                      next-text="下一页"
                   >
                   </el-pagination>
                 </div>
@@ -290,21 +290,21 @@
             </div>
 
             <el-upload
-              class="upload-demo flex flex-direction-reverse up-file"
-              ref="upload"
-              action="baidu.com"
-              accept='.xls,.xlsx'
-              :show-file-list="true"
-              :on-preview="handlePreview"
-              :on-success="uploadFileSuccess"
-              :on-remove="handleRemove"
-              :auto-upload="false"
-              multiple
-              :limit="10"
-              :on-exceed="handleExceed"
-              :on-change="filechange"
-              :file-list="fileList"
-              :http-request="submitFile"
+                class="upload-demo flex flex-direction-reverse up-file"
+                ref="upload"
+                action="baidu.com"
+                accept='.xls,.xlsx,.csv'
+                :show-file-list="true"
+                :on-preview="handlePreview"
+                :on-success="uploadFileSuccess"
+                :on-remove="handleRemove"
+                :auto-upload="false"
+                multiple
+                :limit="10"
+                :on-exceed="handleExceed"
+                :on-change="filechange"
+                :file-list="fileList"
+                :http-request="submitFile"
             >
 
               <div slot="tip" class="el-upload__tip margin-top-sm">点击选择文件即可上传</div>
@@ -346,9 +346,9 @@
         <el-table-column prop="create_date" label="上传日期"></el-table-column>
         <el-table-column prop="user" label="上传人"></el-table-column>
         <el-table-column
-          fixed="right"
-          label="操作"
-          width="100">
+            fixed="right"
+            label="操作"
+            width="100">
           <template slot-scope="scope">
             <el-button @click.native.prevent="deleteRow(scope.$index, manageList)" type="text" size="small">删除
             </el-button>
@@ -361,427 +361,427 @@
 </template>
 
 <script>
-    import {parseTime} from "../../common/utils/setMethods.js";
-    import {json2excel} from "../../common/utils/setMethods.js";
-    import subTable from '../../components/table/SubTable';
+  import {parseTime} from "../../common/utils/setMethods.js";
+  import {json2excel} from "../../common/utils/setMethods.js";
+  import subTable from '../../components/table/SubTable';
 
-    export default {
-        name: "visitor",
-        components: {
-            subTable
-        },
-        data() {
+  export default {
+    name: "visitor",
+    components: {
+      subTable
+    },
+    data() {
 
-            const list = [{
-                name: '时段分布',
-                id: 1
-            }, {
-                name: '地域分布',
-                id: 2
-            }]
-            return {
-                manageList: [],//管理列表数据
-                uploadNum: 0,//已上传文件个数
-                tableData: [],
-                orderHight: 1000,
-                activeIndex2: '1',//控制nav高亮
-                default1: '1',
-                dialogTableVisible: false,//控制日志弹窗
-                manageModel: false,//控制管理弹窗
-                navlist: list,//导航列表
-                value1: '',//日期值
-                value2: '',//日期值
-                tags: [{type: '', label: '标签一标签一标签一', ischoosed: false},
-                    {type: 'success', label: '标签二标签二标签二', ischoosed: true},
-                    {type: 'info', label: '标签三标签三标签三标签三', ischoosed: false},
-                    {type: 'danger', label: '标签四标签四标签四', ischoosed: false},
-                    {type: 'warning', label: '标签五标签五', ischoosed: false},
-                    {type: '', label: '标签一', ischoosed: false},
-                    {type: 'success', label: '标签二标签二标签二', ischoosed: true},
-                    {type: 'info', label: '标签三', ischoosed: false},
-                    {type: 'danger', label: '标签三标签三', ischoosed: false},
-                    {type: 'warning', label: '标签五', ischoosed: false}],
-                arr: [],//自定义表格头
-                sortrow: {prop: 'date', order: 'descending'},//表头是否排序
-                currentPage: 1,//表格当前页码
-                store: [{id: 0, name: '全部'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
-                storeIndex: 0,//选中的店铺来源index
-                storeIndex1: 0,
-                isShowLoadBox: false,//打开上传弹窗
-                isuploading: false,//是否正在上传
-                uploadShow: '',//控制上传中的弹窗
-                fileList: [],
-                showmore: false,//查看更多标签
-                opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
-                curIdx: 0,//当前选中
-                isShowAll: false,//是否查看更多
-                radio2: 2,
-                sorts: '',//决定表格排序的字段
-                navIndex: 0,//子导航选中的值
+      const list = [{
+        name: '时段分布',
+        id: 1
+      }, {
+        name: '地域分布',
+        id: 2
+      }]
+      return {
+        manageList: [],//管理列表数据
+        uploadNum: 0,//已上传文件个数
+        tableData: [],
+        orderHight: 1000,
+        activeIndex2: '1',//控制nav高亮
+        default1: '1',
+        dialogTableVisible: false,//控制日志弹窗
+        manageModel: false,//控制管理弹窗
+        navlist: list,//导航列表
+        value1: '',//日期值
+        value2: '',//日期值
+        tags: [{type: '', label: '标签一标签一标签一', ischoosed: false},
+          {type: 'success', label: '标签二标签二标签二', ischoosed: true},
+          {type: 'info', label: '标签三标签三标签三标签三', ischoosed: false},
+          {type: 'danger', label: '标签四标签四标签四', ischoosed: false},
+          {type: 'warning', label: '标签五标签五', ischoosed: false},
+          {type: '', label: '标签一', ischoosed: false},
+          {type: 'success', label: '标签二标签二标签二', ischoosed: true},
+          {type: 'info', label: '标签三', ischoosed: false},
+          {type: 'danger', label: '标签三标签三', ischoosed: false},
+          {type: 'warning', label: '标签五', ischoosed: false}],
+        arr: [],//自定义表格头
+        sortrow: {prop: 'date', order: 'descending'},//表头是否排序
+        currentPage: 1,//表格当前页码
+        store: [{id: 0, name: '全部'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
+        storeIndex: 0,//选中的店铺来源index
+        storeIndex1: 0,
+        isShowLoadBox: false,//打开上传弹窗
+        isuploading: false,//是否正在上传
+        uploadShow: '',//控制上传中的弹窗
+        fileList: [],
+        showmore: false,//查看更多标签
+        opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
+        curIdx: 0,//当前选中
+        isShowAll: false,//是否查看更多
+        radio2: 2,
+        sorts: '',//决定表格排序的字段
+        navIndex: 0,//子导航选中的值
 
-            }
-        },
-        methods: {
-            errorHandler() {
-                return true
-            },
+      }
+    },
+    methods: {
+      errorHandler() {
+        return true
+      },
 
-            // 点击管理
-            toggleManage() {
-                this.manageModel = true;
+      // 点击管理
+      toggleManage() {
+        this.manageModel = true;
 
-                const loading = this.$loading({
-                    lock: true,
-                    text: '努力加载中...',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.1)'
-                });
-                let data = {
-                    // today: 2019 - 11 - 12,
-                    user: 'root'
-                }
-                this.$axios.post('/api/v1/uploadlog/', data).then(res => {
-                    loading.close()
-                    console.log(res)
-                    if (res.status == 200) {
-                        this.manageList = res.data.data
-                    }
-                }).catch(res => {
-                    loading.close()
-                })
-            },
+        const loading = this.$loading({
+          lock: true,
+          text: '努力加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)'
+        });
+        let data = {
+          // today: 2019 - 11 - 12,
+          user: 'root'
+        }
+        this.$axios.post('/api/v1/uploadlog/', data).then(res => {
+          loading.close()
+          console.log(res)
+          if (res.status == 200) {
+            this.manageList = res.data.data
+          }
+        }).catch(res => {
+          loading.close()
+        })
+      },
 
-            // 删除管理数据
-            deleteRow(idx, rows) {
-                console.log(idx, rows)
-                let tabId;
-                this.manageList.forEach((item, index) => {
-                    if (index == idx) {
-                        tabId = item.id
-                    }
-                })
-                console.log(tabId)
-                let pram = {tabId: tabId}
-                this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
-                    if (res.status == 200) {
-                        rows.splice(idx, 1);
-                    } else {
-                        this.$message.error(`操作失败,错误代码为：${res.msg}`);
-                    }
-                }).catch(res => {
-                    console.log(res)
-                })
-            },
+      // 删除管理数据
+      deleteRow(idx, rows) {
+        console.log(idx, rows)
+        let tabId;
+        this.manageList.forEach((item, index) => {
+          if (index == idx) {
+            tabId = item.id
+          }
+        })
+        console.log(tabId)
+        let pram = {tabId: tabId}
+        this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
+          if (res.status == 200) {
+            rows.splice(idx, 1);
+          } else {
+            this.$message.error(`操作失败,错误代码为：${res.msg}`);
+          }
+        }).catch(res => {
+          console.log(res)
+        })
+      },
 
-            // 导航栏选择
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
+      // 导航栏选择
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
 
-            },
+      },
 
-            // 子导航选择
-            selectSub(key, keyPath) {
-                console.log(key, keyPath);
-                this.navIndex = Number(key - 1)
-            },
+      // 子导航选择
+      selectSub(key, keyPath) {
+        console.log(key, keyPath);
+        this.navIndex = Number(key - 1)
+      },
 
-            // 选择最近几天日期
-            handleCommand(command) {
-                this.$message('click on item ' + command);
-            },
-            // 选择店铺来源
-            selectStore(command) {
-                this.storeIndex = command
-            },
-            // 选择上传到店铺
-            selectToStore(command) {
-                this.storeIndex1 = command
-            },
+      // 选择最近几天日期
+      handleCommand(command) {
+        this.$message('click on item ' + command);
+      },
+      // 选择店铺来源
+      selectStore(command) {
+        this.storeIndex = command
+      },
+      // 选择上传到店铺
+      selectToStore(command) {
+        this.storeIndex1 = command
+      },
 
-            // 点击查看更多
-            checkmore() {
-                this.showmore = true
-            },
+      // 点击查看更多
+      checkmore() {
+        this.showmore = true
+      },
 
-            // 点击选择标签
-            pickOpt(e) {
-                let idx = e.target.dataset.id;
-                this.tags.forEach((item, index) => {
-                    if (idx == index) {
-                        item.ischoosed = !item.ischoosed;
-                        this.tags[idx] = item
-                    }
+      // 点击选择标签
+      pickOpt(e) {
+        let idx = e.target.dataset.id;
+        this.tags.forEach((item, index) => {
+          if (idx == index) {
+            item.ischoosed = !item.ischoosed;
+            this.tags[idx] = item
+          }
 
-                })
-            },
+        })
+      },
 
-            // 全选标签
-            allPick() {
-                this.tags.forEach((item, index) => {
-                    item.ischoosed = true;
-                    this.tags[index] = item
-                })
-            },
+      // 全选标签
+      allPick() {
+        this.tags.forEach((item, index) => {
+          item.ischoosed = true;
+          this.tags[index] = item
+        })
+      },
 
-            //取消选择
-            cencerPick() {
-                this.tags.forEach((item, index) => {
-                    item.ischoosed = false;
-                    this.tags[index] = item
-                })
-            },
+      //取消选择
+      cencerPick() {
+        this.tags.forEach((item, index) => {
+          item.ischoosed = false;
+          this.tags[index] = item
+        })
+      },
 
-            // 反选标签
-            inservePick() {
-                this.tags.forEach((item, index) => {
-                    item.ischoosed = !item.ischoosed;
-                    this.tags[index] = item
-                })
-            },
-            // 分页操作
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
+      // 反选标签
+      inservePick() {
+        this.tags.forEach((item, index) => {
+          item.ischoosed = !item.ischoosed;
+          this.tags[index] = item
+        })
+      },
+      // 分页操作
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
 
-            //子类导航切换
-            choosednav(e) {
-                let index = e.target.dataset.index;
-                this.curIdx = index
-            },
+      //子类导航切换
+      choosednav(e) {
+        let index = e.target.dataset.index;
+        this.curIdx = index
+      },
 
-            // 打开上传弹窗
-            openUpLoad() {
-                this.isShowLoadBox = true;
-            },
-            // 关闭上传弹窗
-            closeUpload() {
-                this.$refs.upload.abort()
-                this.isShowLoadBox = false;
-                this.fileList = [];
-                this.uploadNum = 0
-            },
-            // 缩小上传弹窗
-            closeDialog() {
-                if (this.fileList.length > 0) {
-                    if (this.uploadNum == this.fileList.length) {
-                        this.isShowLoadBox = false;
-                        this.fileList = [];
-                        this.uploadNum = 0
-                    } else {
-                        this.isShowLoadBox = false;
-                        this.uploadShow = true;
-                    }
-                } else {
-                    this.isShowLoadBox = false;
-                    this.fileList = [];
-                    this.uploadNum = 0
-                }
-
-                // this.isuploading = true;
-
-            },
-            //放大上传弹窗
-            showUpload() {
-                this.uploadShow = false;
-                this.isShowLoadBox = true;
-            },
-
-            // 上传文件状态监听
-            filechange(files, fileList) {
-                console.log(fileList)
-                this.fileList = fileList
-            },
-
-            // 删除文件
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            // 文件超出限制
-            handleExceed(file, fileList) {
-                console.log(file, fileList);
-            },
-
-            // 点击查看更多
-            showAll() {
-                this.isShowAll = !this.isShowAll;
-            },
-
-            //点击返回选中的单选值
-            changeRadio(e) {
-                console.log(e)
-            },
-
-            // 自定义上传资料
-            submitFile(data) {
-                var i = 0;
-                i++
-                console.log(i)
-                let params = new FormData(); //创建form对象
-                params.append('file', data.file);//通过append向form对象添加数据
-                params.append('fileType', data.file.type);//通过append向form对象添加数据
-                // params.append('fileSize', data.file.size);//通过append向form对象添加数据
-                params.append('fileName', data.file.name);//添加form表单中其他数据
-                params.append('platform', '天猫');//添加form表单中其他数据
-                params.append('shop', '惠普儒韵官旗店');//添加form表单中其他数据
-                params.append('user', 'admin');//添加form表单中其他数据
-                let config = {
-                    headers: {'Content-Type': 'multipart/form-data'},
-                    onUploadProgress: progressEvent => {
-                        console.log(progressEvent, 'progressEvent')
-                        let percent = (progressEvent.loaded / progressEvent.total * 100) || 0
-                        //调用onProgress方法来显示进度条，需要传递个对象 percent为进度值
-                        data.onProgress({percent: percent})
-                    },
-                };  //添加请求头
-                this.$axios.post('/storage/flow/', params, config)//上传文件
-                    .then(response => {
-                        if (response.status == 200) {
-                            data.onSuccess(response.data)
-                            this.uploadNum++;
-                            // 判断是否全部上传完
-                            if (this.uploadNum == this.fileList.length) {
-                                this.$message({
-                                    showClose: true,
-                                    message: '文件已上传完成',
-                                    type: 'success'
-                                });
-                            }
-                        }else{
-                            this.$message.error(`文件上传失败，错误码为：${response.status}`);
-                        }
-                    })
-                    .catch(({err}) => {
-                        data.onError()
-                        this.uploadNum++;
-                        if (this.uploadNum == this.fileList.length) {
-                            this.$message({
-                                showClose: true,
-                                message: '文件已上传完成',
-                                type: 'success'
-                            });
-                        }
-                    })
-            },
-            // 点击上传
-            submitclick() {
-                console.log(this.fileList)
-                if (this.fileList.length <= 0) {
-                    this.$message({
-                        showClose: true,
-                        message: '请先选择需要上传的文件',
-                        type: 'warning'
-                    });
-                    return
-                }
-                this.$refs.upload.submit();
-            },
-            // 上传成功监听
-            uploadFileSuccess(file, fileList) {// 这里可以打印file查看数据结构
-                if (file.response) {//判断是否上传成功
-                    this.fileList.push({url: file.response.key, status: 'finished'})//上传成功之后把值添加到imglist中
-                }
-            },
-            handleRemove(file, fileList) {// 这里可以打印filelist查看数据结构
-                this.fileList = fileList//删除某项数据重新对filelist赋值
-            },
-
-
-            //点击下载事件
-            handleDownload() {
-                let arr = this.arr;
-                // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
-                let day = new Date();
-                day = parseTime(day)
-                let dateName = `模块名第${1}页 ${day}`
-                let newArr = []
-                let newArr2 = []
-                for (let i in arr) {
-                    newArr.push(arr[i].label)
-                }
-                for (let j in arr) {
-                    newArr2.push(arr[j].prop)
-                }
-                //注意：组装的导出excel所需要的数据结构
-                var excelDatas = [
-                    {
-                        tHeader: newArr, // sheet表一头部
-                        filterVal: newArr2, // 表一的数据字段
-                        tableDatas: this.tableData, // 表一的整体json数据
-                        sheetName: dateName// 表一的sheet名字
-                    }
-
-                ]
-                //   引入的函数
-                json2excel(excelDatas, dateName, true, "xlsx")
-            },
-
-            // 获取访客分析数据
-            getvisitor() {
-                const that = this;
-                const loading = this.$loading({
-                    lock: true,
-                    text: '努力加载中...',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.1)'
-                });
-                that.$axios.post("/api/v1/storage/").then(res => {
-                    loading.close();
-                    if (res.status == '200') {
-                        for (let i in res.data.data) {
-                            res.data.data[i].id = Number(i) + 1;
-                        }
-                        that.tableData = res.data.data;
-                        let arr = []
-                        for (let i in res.data.data[0]) {
-                            let obj = {}
-                            if (i == 'id') {
-                                obj.label = '序号';
-                                obj.prop = 'id';
-                                obj.type = 'normal';
-
-                            } else if (i != 'create_date' && i != 'filetabinfo' && i != 'last_date') {
-                                obj.label = i;
-                                obj.prop = i;
-                                obj.type = 'normal';
-                            }
-                            arr.push(obj)
-                        }
-                        // arr.splice(-1, 1)//把多余的一项去掉
-
-                        // 再次进行改造
-                        for (let i in res.data.title) {
-                            if (i != 0 && i != 7 && i != 8 && i != 9) {
-                                arr[i].label = res.data.title[i]
-                            }
-                        }
-                        that.arr = arr;
-                        that.sorts = 'uv'//可调节排序的字段
-                    }
-                }).catch(res => {
-                    loading.close();
-                })
-            },
-        },
-
-        created() {
-            this.getvisitor()
-        },
-        mounted: function () {
-            let that = this;
-            //原生获取屏幕高度
-            let orderHight = document.body.clientHeight
-            console.log(orderHight)
-            that.orderHight = orderHight - 350
-            // document.getElementById('order-list').style.height = orderHight + 'px'
+      // 打开上传弹窗
+      openUpLoad() {
+        this.isShowLoadBox = true;
+      },
+      // 关闭上传弹窗
+      closeUpload() {
+        this.$refs.upload.abort()
+        this.isShowLoadBox = false;
+        this.fileList = [];
+        this.uploadNum = 0
+      },
+      // 缩小上传弹窗
+      closeDialog() {
+        if (this.fileList.length > 0) {
+          if (this.uploadNum == this.fileList.length) {
+            this.isShowLoadBox = false;
+            this.fileList = [];
+            this.uploadNum = 0
+          } else {
+            this.isShowLoadBox = false;
+            this.uploadShow = true;
+          }
+        } else {
+          this.isShowLoadBox = false;
+          this.fileList = [];
+          this.uploadNum = 0
         }
 
+        // this.isuploading = true;
+
+      },
+      //放大上传弹窗
+      showUpload() {
+        this.uploadShow = false;
+        this.isShowLoadBox = true;
+      },
+
+      // 上传文件状态监听
+      filechange(files, fileList) {
+        console.log(fileList)
+        this.fileList = fileList
+      },
+
+      // 删除文件
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      // 文件超出限制
+      handleExceed(file, fileList) {
+        console.log(file, fileList);
+      },
+
+      // 点击查看更多
+      showAll() {
+        this.isShowAll = !this.isShowAll;
+      },
+
+      //点击返回选中的单选值
+      changeRadio(e) {
+        console.log(e)
+      },
+
+      // 自定义上传资料
+      submitFile(data) {
+        var i = 0;
+        i++
+        console.log(i)
+        let params = new FormData(); //创建form对象
+        params.append('file', data.file);//通过append向form对象添加数据
+        params.append('fileType', data.file.type);//通过append向form对象添加数据
+        // params.append('fileSize', data.file.size);//通过append向form对象添加数据
+        params.append('fileName', data.file.name);//添加form表单中其他数据
+        params.append('platform', '天猫');//添加form表单中其他数据
+        params.append('shop', '惠普儒韵官旗店');//添加form表单中其他数据
+        params.append('user', 'admin');//添加form表单中其他数据
+        let config = {
+          headers: {'Content-Type': 'multipart/form-data'},
+          onUploadProgress: progressEvent => {
+            console.log(progressEvent, 'progressEvent')
+            let percent = (progressEvent.loaded / progressEvent.total * 100) || 0
+            //调用onProgress方法来显示进度条，需要传递个对象 percent为进度值
+            data.onProgress({percent: percent})
+          },
+        };  //添加请求头
+        this.$axios.post('/storage/flow/', params, config)//上传文件
+          .then(response => {
+            if (response.status == 200) {
+              data.onSuccess(response.data)
+              this.uploadNum++;
+              // 判断是否全部上传完
+              if (this.uploadNum == this.fileList.length) {
+                this.$message({
+                  showClose: true,
+                  message: '文件已上传完成',
+                  type: 'success'
+                });
+              }
+            } else {
+              this.$message.error(`文件上传失败，错误码为：${response.status}`);
+            }
+          })
+          .catch(({err}) => {
+            data.onError()
+            this.uploadNum++;
+            if (this.uploadNum == this.fileList.length) {
+              this.$message({
+                showClose: true,
+                message: '文件已上传完成',
+                type: 'success'
+              });
+            }
+          })
+      },
+      // 点击上传
+      submitclick() {
+        console.log(this.fileList)
+        if (this.fileList.length <= 0) {
+          this.$message({
+            showClose: true,
+            message: '请先选择需要上传的文件',
+            type: 'warning'
+          });
+          return
+        }
+        this.$refs.upload.submit();
+      },
+      // 上传成功监听
+      uploadFileSuccess(file, fileList) {// 这里可以打印file查看数据结构
+        if (file.response) {//判断是否上传成功
+          this.fileList.push({url: file.response.key, status: 'finished'})//上传成功之后把值添加到imglist中
+        }
+      },
+      handleRemove(file, fileList) {// 这里可以打印filelist查看数据结构
+        this.fileList = fileList//删除某项数据重新对filelist赋值
+      },
+
+
+      //点击下载事件
+      handleDownload() {
+        let arr = this.arr;
+        // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
+        let day = new Date();
+        day = parseTime(day)
+        let dateName = `模块名第${1}页 ${day}`
+        let newArr = []
+        let newArr2 = []
+        for (let i in arr) {
+          newArr.push(arr[i].label)
+        }
+        for (let j in arr) {
+          newArr2.push(arr[j].prop)
+        }
+        //注意：组装的导出excel所需要的数据结构
+        var excelDatas = [
+          {
+            tHeader: newArr, // sheet表一头部
+            filterVal: newArr2, // 表一的数据字段
+            tableDatas: this.tableData, // 表一的整体json数据
+            sheetName: dateName// 表一的sheet名字
+          }
+
+        ]
+        //   引入的函数
+        json2excel(excelDatas, dateName, true, "xlsx")
+      },
+
+      // 获取访客分析数据
+      getvisitor() {
+        const that = this;
+        const loading = this.$loading({
+          lock: true,
+          text: '努力加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)'
+        });
+        that.$axios.post("/api/v1/storage/").then(res => {
+          loading.close();
+          if (res.status == '200') {
+            for (let i in res.data.data) {
+              res.data.data[i].id = Number(i) + 1;
+            }
+            that.tableData = res.data.data;
+            let arr = []
+            for (let i in res.data.data[0]) {
+              let obj = {}
+              if (i == 'id') {
+                obj.label = '序号';
+                obj.prop = 'id';
+                obj.type = 'normal';
+
+              } else if (i != 'create_date' && i != 'filetabinfo' && i != 'last_date') {
+                obj.label = i;
+                obj.prop = i;
+                obj.type = 'normal';
+              }
+              arr.push(obj)
+            }
+            // arr.splice(-1, 1)//把多余的一项去掉
+
+            // 再次进行改造
+            for (let i in res.data.title) {
+              if (i != 0 && i != 7 && i != 8 && i != 9) {
+                arr[i].label = res.data.title[i]
+              }
+            }
+            that.arr = arr;
+            that.sorts = 'uv'//可调节排序的字段
+          }
+        }).catch(res => {
+          loading.close();
+        })
+      },
+    },
+
+    created() {
+      this.getvisitor()
+    },
+    mounted: function () {
+      let that = this;
+      //原生获取屏幕高度
+      let orderHight = document.body.clientHeight
+      console.log(orderHight)
+      that.orderHight = orderHight - 350
+      // document.getElementById('order-list').style.height = orderHight + 'px'
     }
+
+  }
 </script>
 
 <style scoped>

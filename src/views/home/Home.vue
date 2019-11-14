@@ -3,17 +3,18 @@
     <el-container style="height: 100%; border: 1px solid #eee;overflow-y: auto">
 
       <el-header class=" bg-black" height="141px" style="padding-right: 0;">
-      <!--  顶部信息-->
+        <!--  头部信息-->
         <DBheader></DBheader>
+
         <!--          导航栏-->
         <el-menu
-          :default-active="activeIndex2"
-          class="el-menu-demo flex align-end padding-left-xl"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="#545C64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
+            :default-active="activeIndex2"
+            class="el-menu-demo flex align-end padding-left-xl"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545C64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
         >
           <el-menu-item index="1">首页</el-menu-item>
           <el-submenu index="数据中心">
@@ -51,18 +52,16 @@
           </div>
         </el-header>
         <el-container :style="{'height':orderHight+'px'}">
-        <!--  侧边栏-->
+          <!--  侧边栏-->
           <el-aside width="300px" class="sidebar" :style="{'height':'85%','background-color':' #F2F6FC'}">
             <Sidebar :sideData="sideData" :orderHight="orderHight" @getcur="getcurId"></Sidebar>
           </el-aside>
           <el-main :style="{'height':'96%'}">
-
             <!--          模块头部-->
             <div class="idx-header ">
               <el-card>
                 <div class="flex align-center justify-between">
                   <div class="extra-large text-blod">模块名</div>
-
                   <div class="base pointer flex align-center">
                     <!-- 市场大盘时显示-->
                     <el-dropdown @command="selectStore" size="small" type="primary" class="margin-right-sm"
@@ -76,11 +75,11 @@
                     </el-dropdown>
                     <el-button type="primary" @click="openUpLoad()">上传<i class="el-icon-upload el-icon--right"></i>
                     </el-button>
-                    <el-button type="warning" @click="manageModel = true">管理<i
-                      class="el-icon-setting el-icon--right"></i>
+                    <el-button type="warning" @click="toggleManage">管理<i
+                        class="el-icon-setting el-icon--right"></i>
                     </el-button>
                     <span class="margin-left-xs log" @click="dialogTableVisible = true"><i
-                      class="el-icon-document"></i> 日志</span>
+                        class="el-icon-document"></i> 日志</span>
                   </div>
                 </div>
               </el-card>
@@ -90,7 +89,7 @@
             <el-card class="margin-top-sm">
               <div class="idx-subnav flex align-start">
                 <div class="flex-sub flex idx-subnav-list">
-                <span v-for="(item,index) in opts" :key="index" class="margin-right-xl"
+                <span v-for="(item,index) in opts" :key="index" class="margin-right-xl pointer"
                       :class="curIdx==index?'text-cyan':''" :data-index="index" @click="choosednav">{{item}}</span>
                 </div>
                 <div class="text-blue">设置</div>
@@ -100,7 +99,7 @@
             <!--         360 子类选项-->
             <el-card class="margin-top-sm">
               <div class="flex flex-wrap idx-opt-list">
-                <div class="padding-xs margin-bottom-sm border idx-opt-item" v-for="(item,index) in 12" :key="index"
+                <div class="padding-xs margin-bottom-sm border idx-opt-item pointer" v-for="(item,index) in 12" :key="index"
                      v-if="isShowAll?index<8:index<12" :data-index="index" @click="">
                   <div class="text-cut">ID 121321231</div>
                   <div class="text-cut">光影精灵2</div>
@@ -115,12 +114,12 @@
             <!--          选择切换-->
             <div class=" margin-top-sm">
               <el-menu
-                :default-active="default1"
-                class="el-menu-demo"
-                mode="horizontal"
-                @select="selectSub"
-                text-color="#333"
-                active-text-color="#ffd04b">
+                  :default-active="default1"
+                  class="el-menu-demo"
+                  mode="horizontal"
+                  @select="selectSub"
+                  text-color="#333"
+                  active-text-color="#ffd04b">
                 <el-menu-item :index="item.id.toString()" v-for="(item,index) in navlist" :key="index">{{item.name}}
                 </el-menu-item>
               </el-menu>
@@ -153,19 +152,20 @@
 
                     <div class="margin-left-sm">
                       <el-date-picker
-                        v-model="value1"
-                        type="date"
-                        placeholder="选择起始日期">
+                          v-model="value1"
+                          type="date"
+                          placeholder="选择起始日期">
                       </el-date-picker>
                       ~
                       <el-date-picker
-                        v-model="value2"
-                        type="date"
-                        placeholder="选择结束日期">
+                          v-model="value2"
+                          type="date"
+                          placeholder="选择结束日期">
                       </el-date-picker>
                     </div>
 
-                    <el-button type="text" class="margin-left-sm" @click="handleDownload">下载<i class="el-icon-download el-icon--right"></i>
+                    <el-button type="text" class="margin-left-sm" @click="handleDownload">下载<i
+                        class="el-icon-download el-icon--right"></i>
                     </el-button>
 
                   </div>
@@ -176,12 +176,12 @@
                   <div class=" margin-top-sm margin-bottom-sm padding-lr-xs "
                        :class="showmore?'flex flex-wrap':'idx-tag'">
                     <el-tag
-                      class=" margin-bottom-sm pointer tag-Opt"
-                      v-for="(item,index) in tags"
-                      :key="index"
-                      :type="item.ischoosed?'success':'warn'"
-                      @click="pickOpt"
-                      :data-id="index"
+                        class=" margin-bottom-sm pointer tag-Opt"
+                        v-for="(item,index) in tags"
+                        :key="index"
+                        :type="item.ischoosed?'success':'warn'"
+                        @click="pickOpt"
+                        :data-id="index"
                     >
                       {{ item.label }} <i class="el-icon-check el-icon--right" v-if="item.ischoosed"></i>
                     </el-tag>
@@ -198,21 +198,20 @@
                 </div>
 
 
-
                 <!--              表格-->
                 <subTable :tableData="tableData" :arr="arr"></subTable>
 
                 <!--              分页-->
                 <div class="flex justify-center padding-sm">
                   <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="20"
-                    layout=" prev, pager, next"
-                    :total="500"
-                    prev-text="上一页"
-                    next-text="下一页"
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page.sync="currentPage"
+                      :page-size="20"
+                      layout=" prev, pager, next"
+                      :total="500"
+                      prev-text="上一页"
+                      next-text="下一页"
                   >
                   </el-pagination>
                 </div>
@@ -228,479 +227,343 @@
     <!--    日志弹窗-->
     <el-dialog title="日志" :visible.sync="dialogTableVisible">
       <el-table :data="tableData" height="350">
-
-        <el-table-column property="address" label=""></el-table-column>
+        <el-table-column property="address" label="操作日志"></el-table-column>
       </el-table>
     </el-dialog>
 
-    <!--    上传弹窗-->
-    <transition name="el-fade-in-linear">
-      <div class="up-dialog" v-if="isShowLoadBox">
-        <div class="up-dialogBox bg-white padding-sm text-black">
-          <!--        关闭按钮-->
-          <div class="text-right">
-            <i class="el-icon-close text-blod large " @click="closeDialog()"></i>
-          </div>
-
-          <!--        主体内容-->
-          <!--          上传列表-->
-          <div class="upLoadList flex flex-direction-reverse ">
-
-            <div class="flex justify-center margin-top-sm">
-              <div class="pointer el-button--small bg-cyan  margin-left-sm" @click="submitclick">点击上传
-              </div>
-              <el-button size="small" class="el-button--small bg-red margin-left-sm" @click="closeUpload">取消
-              </el-button>
-            </div>
-
-            <el-upload
-              class="upload-demo flex flex-direction-reverse up-file"
-              ref="upload"
-              action="baidu.com"
-              accept='.xls,.xlsx'
-              :show-file-list="true"
-              :on-preview="handlePreview"
-              :on-success="uploadFileSuccess"
-              :on-remove="handleRemove"
-              :auto-upload="false"
-              multiple
-              :limit="10"
-              :on-exceed="handleExceed"
-              :on-change="filechange"
-              :file-list="fileList"
-              :http-request="submitFile"
-            >
-
-              <div slot="tip" class="el-upload__tip margin-top-sm">点击选择文件即可上传</div>
-              <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-            </el-upload>
-
-            <div class="text-center extra-large padding-xl" v-if="fileList.length<=0">空空如也，请先添加文件吧</div>
-
-          </div>
-        </div>
-      </div>
-    </transition>
-
-    <!--    缩小上传弹窗-->
-    <div class="uploadSmall bg-cyan "
-         :class="uploadShow?'animate-small':''"
-         @click="showUpload()">
-      <div class="flex align-center justify-center" style="height: 100%"><span>上传中</span></div>
-    </div>
-
+    <!--    上传弹窗组件-->
+    <Upload :showLoadBox="isShowLoadBox" @changeShowLoadBox="changeVal"></Upload>
     <!--    管理弹窗-->
-    <el-dialog title="管理" :visible.sync="manageModel">
-      <el-table :data="tableData" style="width: 92%" max-height="400" ref="multipleTable" tooltip-effect="dark">
-        <!--  可勾选-->
-        <!--        <el-table-column-->
-        <!--          type="selection"-->
-        <!--          width="55">-->
-        <!--        </el-table-column>-->
-        <!--        <template v-for="(item,index) in arr">-->
-
-        <!--          <el-table-column :prop="item.prop" :label="item.label" :key="index" width=""-->
-        <!--                           v-if="item.type==='normal'">-->
-
-        <!--          </el-table-column>-->
-        <!--          <el-table-column slot-scope="scope"></el-table-column>-->
-        <!--        </template>-->
-        <el-table-column prop="filename" label="文件名"></el-table-column>
-        <el-table-column prop="date" label="上传日期"></el-table-column>
-        <el-table-column prop="author" label="上传人"></el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="100">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
-            <!--            <el-button type="text" size="small">编辑</el-button>-->
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
+    <Manage :manageModel="manageModel" @changeManageModel="changeManageModel"></Manage>
   </div>
 </template>
 
 <script>
-    import { parseTime } from "common/utils/setMethods.js";
-    import { json2excel } from "common/utils/setMethods.js";
-    import subTable from 'components/table/SubTable';
-    import Sidebar from 'components/sidebar/Sidebar';
-    import DBheader from 'components/header/DBheader';
-    export default {
-        name: "home",
-        components:{
-            subTable,
-            Sidebar,
-            DBheader
-        },
-        data() {
+  import {parseTime} from "common/utils/setMethods.js";
+  import {json2excel} from "common/utils/setMethods.js";
+  import subTable from 'components/table/SubTable';
+  import Sidebar from 'components/sidebar/Sidebar';
+  import DBheader from 'components/header/DBheader';
+  import Upload from 'components/upload/Upload';
+  import Manage from 'components/manage/Manage';
 
-            const list = [{
-                name: 'dachui',
-                id: 1
-            }, {
-                name: 'dachui1',
-                id: 2
-            }]
+  export default {
+    name: "home",
+    components: {
+      subTable,
+      Sidebar,
+      DBheader,
+      Upload,
+      Manage
+    },
+    data() {
 
-            const sideData = [{
-                title:'aaa',
-                bestList:[{
-                    id:0,
-                    name:'大厦1'
-                },{
-                    id:1,
-                    name:'大厦2'
-                },{
-                    id:2,
-                    name:'大厦3'
-                }],
-                moreList:[{
-                    id:3,
-                    name:'大厦4'
-                },{
-                    id:4,
-                    name:'大厦5'
-                },{
-                    id:5,
-                    name:'大厦6'
-                },{
-                    id:6,
-                    name:'大厦7'
-                },{
-                    id:7,
-                    name:'大厦8'
-                }]
-            },{
-                title:'bbb',
-                bestList:[{
-                    id:0,
-                    name:'大厦1'
-                },{
-                    id:1,
-                    name:'大厦2'
-                },{
-                    id:2,
-                    name:'大厦3'
-                }],
-                moreList:[{
-                    id:3,
-                    name:'大厦4'
-                },{
-                    id:4,
-                    name:'大厦5'
-                },{
-                    id:5,
-                    name:'大厦6'
-                },{
-                    id:6,
-                    name:'大厦7'
-                },{
-                    id:7,
-                    name:'大厦8'
-                }]
-            }]
+      const list = [{
+        name: 'dachui',
+        id: 1
+      }, {
+        name: 'dachui1',
+        id: 2
+      }]
 
-            return {
-                sideData:sideData,//侧边栏数据
-                uploadNum:0,//已上传文件个数
-                tableData: [],
-                orderHight: 1000,
-                activeIndex2: '1',//控制nav高亮
-                default1: '1',
-                dialogTableVisible: false,//控制日志弹窗
-                manageModel: false,//控制管理弹窗
-                navlist: list,//导航列表
-                value1: '',//日期值
-                value2: '',//日期值
-                tags: [{type: '', label: '标签一标签一标签一', ischoosed: false},
-                    {type: 'success', label: '标签二标签二标签二', ischoosed: true},
-                    {type: 'info', label: '标签三标签三标签三标签三', ischoosed: false},
-                    {type: 'danger', label: '标签四标签四标签四', ischoosed: false},
-                    {type: 'warning', label: '标签五标签五', ischoosed: false},
-                    {type: '', label: '标签一', ischoosed: false},
-                    {type: 'success', label: '标签二标签二标签二', ischoosed: true},
-                    {type: 'info', label: '标签三', ischoosed: false},
-                    {type: 'danger', label: '标签三标签三', ischoosed: false},
-                    {type: 'warning', label: '标签五', ischoosed: false}],
-                arr: [],
-                sortrow:{prop:'date',order:'descending'},//表头是否排序
-                currentPage: 1,//表格当前页码
-                store: [{id: 0, name: '全部'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
-                store1: [{id: 0, name: '请选择'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
-                storeIndex: 0,//选中的店铺来源index
-                storeIndex1: 0,
-                isShowLoadBox: false,//打开上传弹窗
-                isuploading: false,//是否正在上传
-                uploadShow: '',//控制上传中的弹窗
-                fileList: [],
-                showmore: false,//查看更多标签
-                opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
-                curIdx: 0,//当前选中
-                isShowAll: false,//是否查看更多
-                radio2: 2,
+      const sideData = [{
+        title: 'aaa',
+        bestList: [{
+          id: 0,
+          name: '大厦1'
+        }, {
+          id: 1,
+          name: '大厦2'
+        }, {
+          id: 2,
+          name: '大厦3'
+        }],
+        moreList: [{
+          id: 3,
+          name: '大厦4'
+        }, {
+          id: 4,
+          name: '大厦5'
+        }, {
+          id: 5,
+          name: '大厦6'
+        }, {
+          id: 6,
+          name: '大厦7'
+        }, {
+          id: 7,
+          name: '大厦8'
+        }]
+      }, {
+        title: 'bbb',
+        bestList: [{
+          id: 0,
+          name: '大厦1'
+        }, {
+          id: 1,
+          name: '大厦2'
+        }, {
+          id: 2,
+          name: '大厦3'
+        }],
+        moreList: [{
+          id: 3,
+          name: '大厦4'
+        }, {
+          id: 4,
+          name: '大厦5'
+        }, {
+          id: 5,
+          name: '大厦6'
+        }, {
+          id: 6,
+          name: '大厦7'
+        }, {
+          id: 7,
+          name: '大厦8'
+        }]
+      }]
 
+      return {
+        sideData: sideData,//侧边栏数据
+        uploadNum: 0,//已上传文件个数
+        tableData: [],
+        manageList: [],
+        orderHight: 1000,
+        activeIndex2: 'HP官方旗舰店',//控制navmenu高亮
+        default1: '1',
+        dialogTableVisible: false,//控制日志弹窗
+        manageModel: false,//控制管理弹窗
+        navlist: list,//导航列表
+        value1: '',//日期值
+        value2: '',//日期值
+        tags: [{type: '', label: '标签一标签一标签一', ischoosed: false},
+          {type: 'success', label: '标签二标签二标签二', ischoosed: true},
+          {type: 'info', label: '标签三标签三标签三标签三', ischoosed: false},
+          {type: 'danger', label: '标签四标签四标签四', ischoosed: false},
+          {type: 'warning', label: '标签五标签五', ischoosed: false},
+          {type: '', label: '标签一', ischoosed: false},
+          {type: 'success', label: '标签二标签二标签二', ischoosed: true},
+          {type: 'info', label: '标签三', ischoosed: false},
+          {type: 'danger', label: '标签三标签三', ischoosed: false},
+          {type: 'warning', label: '标签五', ischoosed: false}],
+        arr: [],
+        sortrow: {prop: 'date', order: 'descending'},//表头是否排序
+        currentPage: 1,//表格当前页码
+        store: [{id: 0, name: '全部'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
+        store1: [{id: 0, name: '请选择'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
+        storeIndex: 0,//选中的店铺来源index
+        storeIndex1: 0,
+        isShowLoadBox: false,//打开上传弹窗
+        showmore: false,//查看更多标签
+        opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
+        curIdx: 0,//当前选中
+        isShowAll: false,//是否查看更多
+        radio2: 2,
+
+      }
+    },
+    methods: {
+
+
+      // 监听获取当前侧边栏点击的参数
+      getcurId(e) {
+        console.log('Hi, ' + e)
+      },
+
+      //改变显示上传弹窗的值
+      changeVal(e) {
+        this.isShowLoadBox = e
+      },
+
+      // 导航栏选择
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+
+      },
+
+      // 子导航选择
+      selectSub(key, keyPath) {
+        console.log(key, keyPath);
+      },
+
+      // 选择最近几天日期
+      handleCommand(command) {
+        this.$message('click on item ' + command);
+      },
+      // 选择店铺来源
+      selectStore(command) {
+        this.storeIndex = command
+      },
+      // 选择上传到店铺
+      selectToStore(command) {
+        this.storeIndex1 = command
+      },
+
+      // 点击查看更多
+      checkmore() {
+        this.showmore = true
+      },
+
+      // 点击选择标签
+      pickOpt(e) {
+        let idx = e.target.dataset.id;
+        this.tags.forEach((item, index) => {
+          if (idx == index) {
+            item.ischoosed = !item.ischoosed;
+            this.tags[idx] = item
+          }
+
+        })
+      },
+
+      // 全选标签
+      allPick() {
+        this.tags.forEach((item, index) => {
+          item.ischoosed = true;
+          this.tags[index] = item
+        })
+      },
+
+      //取消选择
+      cencerPick() {
+        this.tags.forEach((item, index) => {
+          item.ischoosed = false;
+          this.tags[index] = item
+        })
+      },
+
+      // 反选标签
+      inservePick() {
+        this.tags.forEach((item, index) => {
+          item.ischoosed = !item.ischoosed;
+          this.tags[index] = item
+        })
+      },
+      // 分页操作
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+
+      //子类导航切换
+      choosednav(e) {
+        let index = e.target.dataset.index;
+        this.curIdx = index
+      },
+
+      // 打开上传弹窗
+      openUpLoad() {
+        this.isShowLoadBox = true;
+        console.log(this.isShowLoadBox)
+      },
+
+
+      // 点击查看更多
+      showAll() {
+        this.isShowAll = !this.isShowAll;
+      },
+
+      //点击返回选中的单选值
+      changeRadio(e) {
+        console.log(e)
+      },
+      // 点击管理
+      toggleManage() {
+        this.manageModel = true;
+
+      },
+
+      // 监听关注组件返回的值
+      changeManageModel() {
+        this.manageModel = false;
+      },
+
+      //点击下载事件
+      handleDownload() {
+        // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
+        let day = new Date();
+        day = parseTime(day)
+        console.log(day)
+        let dateName = `模块名第${1}页 ${day}`
+        //注意：组装的导出excel所需要的数据结构
+        var excelDatas = [
+          {
+            tHeader: ["Id", "Title", "Author", "Readings", "Date"], // sheet表一头部
+            filterVal: ["id", "title", "author", "pageviews", "display_time"], // 表一的数据字段
+            tableDatas: this.list, // 表一的整体json数据
+            sheetName: dateName// 表一的sheet名字
+          }
+
+        ]
+        //   引入的函数
+        json2excel(excelDatas, dateName, true, "xlsx")
+      },
+      // 获取访客分析数据
+      getvisitor() {
+        const that = this;
+        const loading = this.$loading({
+          lock: true,
+          text: '努力加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)'
+        });
+        that.$axios.post("/api/v1/storage/").then(res => {
+          loading.close();
+          if (res.status == '200') {
+            for (let i in res.data.data) {
+              res.data.data[i].id = Number(i) + 1;
             }
-        },
-        methods: {
+            that.tableData = res.data.data;
+            let arr = []
+            for (let i in res.data.data[0]) {
+              let obj = {}
+              if (i == 'id') {
+                obj.label = '序号';
+                obj.prop = 'id';
+                obj.type = 'normal';
 
-
-            // 获取当前侧边栏点击的参数
-            getcurId(e){
-                alert('Hi, ' + e)
-            },
-
-            // 导航栏选择
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-
-            },
-
-            // 子导航选择
-            selectSub(key, keyPath) {
-                console.log(key, keyPath);
-            },
-
-            // 选择最近几天日期
-            handleCommand(command) {
-                this.$message('click on item ' + command);
-            },
-            // 选择店铺来源
-            selectStore(command) {
-                this.storeIndex = command
-            },
-            // 选择上传到店铺
-            selectToStore(command) {
-                this.storeIndex1 = command
-            },
-
-            // 点击查看更多
-            checkmore() {
-                this.showmore = true
-            },
-
-            // 点击选择标签
-            pickOpt(e) {
-                let idx = e.target.dataset.id;
-                this.tags.forEach((item, index) => {
-                    if (idx == index) {
-                        item.ischoosed = !item.ischoosed;
-                        this.tags[idx] = item
-                    }
-
-                })
-            },
-
-            // 全选标签
-            allPick() {
-                this.tags.forEach((item, index) => {
-                    item.ischoosed = true;
-                    this.tags[index] = item
-                })
-            },
-
-            //取消选择
-            cencerPick(){
-                this.tags.forEach((item, index) => {
-                    item.ischoosed = false;
-                    this.tags[index] = item
-                })
-            },
-
-            // 反选标签
-            inservePick(){
-                this.tags.forEach((item, index) => {
-                    item.ischoosed = !item.ischoosed;
-                    this.tags[index] = item
-                })
-            },
-            // 分页操作
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
-
-            //子类导航切换
-            choosednav(e) {
-                let index = e.target.dataset.index;
-                this.curIdx = index
-            },
-
-            // 打开上传弹窗
-            openUpLoad() {
-                this.isShowLoadBox = true;
-            },
-            // 关闭上传弹窗
-            closeUpload() {
-                this.$refs.upload.abort()
-                this.isShowLoadBox = false;
-                this.fileList=[];
-                this.uploadNum=0
-            },
-            // 缩小上传弹窗
-            closeDialog() {
-                if (this.fileList.length > 0) {
-                    if(this.uploadNum==this.fileList.length){
-                        this.isShowLoadBox = false;
-                        this.fileList=[];
-                        this.uploadNum=0
-                    }else{
-                        this.isShowLoadBox = false;
-                        this.uploadShow = true;
-                    }
-                }else{
-                    this.isShowLoadBox = false;
-                    this.fileList=[];
-                    this.uploadNum=0
-                }
-
-                // this.isuploading = true;
-
-            },
-            //放大上传弹窗
-            showUpload() {
-                this.uploadShow = false;
-                this.isShowLoadBox = true;
-            },
-
-            // 上传文件状态监听
-            filechange(files, fileList) {
-                console.log(fileList)
-                this.fileList = fileList
-            },
-
-            // 删除文件
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            // 文件超出限制
-            handleExceed(file, fileList){
-                console.log(file, fileList);
-            },
-
-            // 点击查看更多
-            showAll() {
-                this.isShowAll = !this.isShowAll;
-            },
-
-            //点击返回选中的单选值
-            changeRadio(e) {
-                console.log(e)
-            },
-
-
-            // 自定义上传资料
-            submitFile(data) {
-                var i = 0;
-                i++
-                console.log(i)
-                let params = new FormData(); //创建form对象
-                params.append('file', data.file);//通过append向form对象添加数据
-                params.append('fileType', data.file.type);//通过append向form对象添加数据
-                params.append('fileSize', data.file.size);//通过append向form对象添加数据
-                params.append('fileName', data.file.name);//添加form表单中其他数据
-                let config = {
-                    headers: {'Content-Type': 'multipart/form-data'},
-                    onUploadProgress: progressEvent=>{
-                    console.log(progressEvent,'progressEvent')
-                    let percent=(progressEvent.loaded / progressEvent.total * 100) || 0
-                    //调用onProgress方法来显示进度条，需要传递个对象 percent为进度值
-                    data.onProgress({percent:percent})
-                },
-                };  //添加请求头
-                this.$axios.post('/storage/flowarea/', params, config)//上传图片
-                    .then(response => {
-                        console.log(response,'response')
-                        data.onSuccess(response.data)
-                        this.uploadNum++;
-                        // 判断是否全部上传完
-                        if(this.uploadNum==this.fileList.length){
-                            this.$message({
-                                showClose: true,
-                                message: '文件已上传完成',
-                                type: 'success'
-                            });
-                        }
-                    })
-                    .catch(({err}) => {
-                        data.onError()
-                        this.uploadNum++;
-                        if(this.uploadNum==this.fileList.length){
-                            this.$message({
-                                showClose: true,
-                                message: '文件已上传完成',
-                                type: 'success'
-                            });
-                        }
-                    })
-            },
-            // 点击上传
-            submitclick() {
-                console.log(this.fileList)
-                if(this.fileList.length<=0){
-                    this.$message({
-                        showClose: true,
-                        message: '请先选择需要上传的文件',
-                        type: 'warning'
-                    });
-                    return
-                }
-                this.$refs.upload.submit();
-            },
-            // 上传成功监听
-            uploadFileSuccess(file, fileList) {// 这里可以打印file查看数据结构
-                if (file.response) {//判断是否上传成功
-                    this.fileList.push({url: file.response.key, status: 'finished'})//上传成功之后把值添加到imglist中
-                }
-            },
-            handleRemove(file, fileList) {// 这里可以打印filelist查看数据结构
-                this.fileList = fileList//删除某项数据重新对filelist赋值
-            },
-
-
-            //点击下载事件
-            handleDownload () {
-                // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
-                let day = new Date();
-                day = parseTime(day)
-                console.log(day)
-                let dateName = `模块名第${1}页 ${day}`
-                //注意：组装的导出excel所需要的数据结构
-                var excelDatas = [
-                    {
-                        tHeader: ["Id", "Title", "Author", "Readings", "Date"], // sheet表一头部
-                        filterVal: ["id", "title", "author", "pageviews", "display_time"], // 表一的数据字段
-                        tableDatas: this.list, // 表一的整体json数据
-                        sheetName: dateName// 表一的sheet名字
-                    }
-
-                ]
-                //   引入的函数
-                json2excel(excelDatas, dateName, true, "xlsx")
+              } else if (i != 'create_date' && i != 'filetabinfo' && i != 'last_date') {
+                obj.label = i;
+                obj.prop = i;
+                obj.type = 'normal';
+              }
+              arr.push(obj)
             }
+            // arr.splice(-1, 1)//把多余的一项去掉
 
+            // 再次进行改造
+            for (let i in res.data.title) {
+              if (i != 0 && i != 7 && i != 8 && i != 9) {
+                arr[i].label = res.data.title[i]
+              }
+            }
+            that.arr = arr;
+            that.sorts = 'uv'//可调节排序的字段
+          }
+        }).catch(res => {
+          loading.close();
+        })
+      },
+    },
 
+    created() {
+      this.getvisitor()
+    },
 
-
-        },
-        mounted: function () {
-            let that = this;
-            //原生获取屏幕高度
-            let orderHight = document.body.clientHeight
-            console.log(orderHight)
-            that.orderHight = orderHight - 350
-            // document.getElementById('order-list').style.height = orderHight + 'px'
-        }
-
-
+    mounted: function () {
+      let that = this;
+      //原生获取屏幕高度
+      let orderHight = document.body.clientHeight
+      console.log(orderHight)
+      that.orderHight = orderHight - 350
+      // document.getElementById('order-list').style.height = orderHight + 'px'
     }
+
+
+  }
 </script>
 
 <style scoped>
