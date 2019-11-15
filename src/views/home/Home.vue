@@ -99,8 +99,8 @@
             <!--         360 子类选项-->
             <el-card class="margin-top-sm">
               <div class="flex flex-wrap idx-opt-list">
-                <div class="padding-xs margin-bottom-sm border idx-opt-item pointer" v-for="(item,index) in 12" :key="index"
-                     v-if="isShowAll?index<8:index<12" :data-index="index" @click="">
+                <div class="padding-xs margin-bottom-sm border idx-opt-item pointer" :class="curOpt==index?'bg-cyan':''" v-for="(item,index) in 12" :key="index"
+                     v-if="isShowAll?index<8:index<12" @click="choosedOpt(index)" >
                   <div class="text-cut">ID 121321231</div>
                   <div class="text-cut">光影精灵2</div>
                 </div>
@@ -139,30 +139,42 @@
                     </div>
                   </div>
                   <div class="flex align-center">
-                    <el-dropdown trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link">
-                      日期:<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="a" icon="el-icon-s-promotion">最近一天</el-dropdown-item>
-                        <el-dropdown-item command="b" icon="el-icon-s-promotion">最近七天</el-dropdown-item>
-                        <el-dropdown-item command="c" icon="el-icon-s-promotion">最近三十天</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
+<!--                    <el-dropdown trigger="click" @command="handleCommand">-->
+<!--                    <span class="el-dropdown-link">-->
+<!--                      日期:<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+<!--                    </span>-->
+<!--                      <el-dropdown-menu slot="dropdown">-->
+<!--                        <el-dropdown-item command="a" icon="el-icon-s-promotion">最近一天</el-dropdown-item>-->
+<!--                        <el-dropdown-item command="b" icon="el-icon-s-promotion">最近七天</el-dropdown-item>-->
+<!--                        <el-dropdown-item command="c" icon="el-icon-s-promotion">最近三十天</el-dropdown-item>-->
+<!--                      </el-dropdown-menu>-->
+<!--                    </el-dropdown>-->
 
-                    <div class="margin-left-sm">
-                      <el-date-picker
-                          v-model="value1"
-                          type="date"
-                          placeholder="选择起始日期">
-                      </el-date-picker>
-                      ~
-                      <el-date-picker
-                          v-model="value2"
-                          type="date"
-                          placeholder="选择结束日期">
-                      </el-date-picker>
-                    </div>
+<!--                    <div class="margin-left-sm">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="value1"-->
+<!--                          type="date"-->
+<!--                          placeholder="选择起始日期">-->
+<!--                      </el-date-picker>-->
+<!--                      ~-->
+<!--                      <el-date-picker-->
+<!--                          v-model="value2"-->
+<!--                          type="date"-->
+<!--                          placeholder="选择结束日期">-->
+<!--                      </el-date-picker>-->
+<!--                    </div>-->
+
+                    <el-date-picker
+
+                        v-model="value2"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="~"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+                    </el-date-picker>
 
                     <el-button type="text" class="margin-left-sm" @click="handleDownload">下载<i
                         class="el-icon-download el-icon--right"></i>
@@ -199,7 +211,7 @@
 
 
                 <!--              表格-->
-                <subTable :tableData="tableData" :arr="arr"></subTable>
+                <subTable :tableData="tableData" :arr="arr" :sorts="sorts"></subTable>
 
                 <!--              分页-->
                 <div class="flex justify-center padding-sm">
@@ -335,6 +347,7 @@
         dialogTableVisible: false,//控制日志弹窗
         manageModel: false,//控制管理弹窗
         navlist: list,//导航列表
+        curOpt:0,//360子选择
         value1: '',//日期值
         value2: '',//日期值
         tags: [{type: '', label: '标签一标签一标签一', ischoosed: false},
@@ -360,11 +373,46 @@
         curIdx: 0,//当前选中
         isShowAll: false,//是否查看更多
         radio2: 2,
+        sorts: '',//决定表格排序的字段
 
+        pickerOptions: {// 日期
+          shortcuts: [{
+            text: '最近一天',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }],
+          onPick:(dateRange=>{//获取选择的时间回调
+            if(!dateRange.maxDate) {
+              return;
+            }
+            console.log(parseTime(dateRange.minDate))
+            this.value2 = [dateRange.minDate, dateRange.maxDate];
+            // this.searchChangeDate(); //接上筛选接口
+          })
+        },
       }
     },
     methods: {
-
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
@@ -415,6 +463,11 @@
           }
 
         })
+      },
+
+      // 点击选择360子选项
+      choosedOpt(index){
+        this.curOpt = index
       },
 
       // 全选标签
@@ -483,17 +536,30 @@
 
       //点击下载事件
       handleDownload() {
+        console.log(this.tableData)
+        if(this.tableData.length<=0){
+          this.$message('表格无数据');
+          return
+        }
+        let arr = this.arr;
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
         let day = new Date();
         day = parseTime(day)
-        console.log(day)
         let dateName = `模块名第${1}页 ${day}`
+        let newArr = []
+        let newArr2 = []
+        for (let i in arr) {
+          newArr.push(arr[i].label)
+        }
+        for (let j in arr) {
+          newArr2.push(arr[j].prop)
+        }
         //注意：组装的导出excel所需要的数据结构
         var excelDatas = [
           {
-            tHeader: ["Id", "Title", "Author", "Readings", "Date"], // sheet表一头部
-            filterVal: ["id", "title", "author", "pageviews", "display_time"], // 表一的数据字段
-            tableDatas: this.list, // 表一的整体json数据
+            tHeader: newArr, // sheet表一头部
+            filterVal: newArr2, // 表一的数据字段
+            tableDatas: this.tableData, // 表一的整体json数据
             sheetName: dateName// 表一的sheet名字
           }
 
@@ -512,7 +578,8 @@
         });
         that.$axios.post("/api/v1/storage/").then(res => {
           loading.close();
-          if (res.status == '200') {
+          console.log(res.data,'aaa')
+          if (res.data.code == 0) {
             for (let i in res.data.data) {
               res.data.data[i].id = Number(i) + 1;
             }
@@ -533,7 +600,7 @@
               arr.push(obj)
             }
             // arr.splice(-1, 1)//把多余的一项去掉
-
+            console.log(that.tableData)
             // 再次进行改造
             for (let i in res.data.title) {
               if (i != 0 && i != 7 && i != 8 && i != 9) {
@@ -542,6 +609,9 @@
             }
             that.arr = arr;
             that.sorts = 'uv'//可调节排序的字段
+          }else{
+            this.$message(res.data.msg);
+            that.tableData = that.tableData
           }
         }).catch(res => {
           loading.close();

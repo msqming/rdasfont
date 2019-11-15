@@ -42,7 +42,7 @@
     data() {
       return {
         sortable: '',
-        // sorts:'date'
+        sorts:'date'
       }
     },
     props: {
@@ -56,7 +56,7 @@
       },
       sorts: {
         type: String,
-        default: 'id'
+        default: ''
       }
 
     },
@@ -64,14 +64,7 @@
 
     mounted() {
       // 例子
-
-      for (let i in this.arr) {
-        if (this.arr[i].prop === 'date') {
-          this.sortType = true
-        } else {
-          this.sortType = false
-        }
-      }
+      console.log(this.sorts)
       // this.sorts = 'date';//决定控制列的排序
 
     }

@@ -55,8 +55,10 @@
         this.$axios.post('/api/v1/uploadlog/', data).then(res => {
           loading.close()
           console.log(res)
-          if (res.status == 200) {
+          if (res.data.code == 0) {
             this.manageList = res.data.data
+          }else {
+            this.$message.error(`${res.data.msg}`);
           }
         }).catch(res => {
           loading.close()
@@ -75,10 +77,10 @@
         console.log(tabId)
         let pram = {tabId: tabId}
         this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
-          if (res.status == 200) {
+          if (res.data.code == 0) {
             rows.splice(idx, 1);
           } else {
-            this.$message.error(`操作失败,错误代码为：${res.msg}`);
+            this.$message.error(`操作失败${res.data.msg}`);
           }
         }).catch(res => {
           console.log(res)

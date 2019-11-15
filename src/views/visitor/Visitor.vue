@@ -694,6 +694,10 @@
 
       //点击下载事件
       handleDownload() {
+        if(this.tableData.length<=0){
+          this.$message('表格无数据');
+          return
+        }
         let arr = this.arr;
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
         let day = new Date();
@@ -762,6 +766,9 @@
             }
             that.arr = arr;
             that.sorts = 'uv'//可调节排序的字段
+          }else{
+            this.$message(res.msg);
+            that.tableData = that.tableData
           }
         }).catch(res => {
           loading.close();

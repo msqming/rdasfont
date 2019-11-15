@@ -57,6 +57,14 @@
         <span>{{uploadNum==fileList.length?'已完成':'上传中'}}</span>
       </div>
     </div>
+
+    <el-dialog title="失败汇总" :visible.sync="dialogTableVisible" @close="close">
+      <el-table :data="uploadError" border max-height="400">
+        <el-table-column property="filename" label="文件名"></el-table-column>
+        <el-table-column property="errcode" label="错误码" width="100"></el-table-column>
+        <el-table-column property="errmsg" label="原因"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 
 </template>
@@ -76,11 +84,12 @@
         fileList: [],
         uploadNum: 0,
         isShowLoadBox: this.showLoadBox,
-        uploadShow: false
+        uploadShow: false,
+        uploadError:[],
+        dialogTableVisible:false
       }
     },
     methods: {
-
 
       // 关闭上传弹窗
       closeUpload() {
@@ -129,14 +138,14 @@
       },
       // 文件超出限制
       handleExceed(file, fileList) {
+        this.$message('文件超出限制')
         console.log(file, fileList);
       },
 
+
       // 自定义上传资料
       submitFile(data) {
-        var i = 0;
-        i++
-        console.log(i)
+
         let params = new FormData(); //创建form对象
         params.append('file', data.file);//通过append向form对象添加数据
         params.append('fileType', data.file.type);//通过append向form对象添加数据
@@ -156,22 +165,40 @@
         };  //添加请求头
         this.$axios.post('/storage/flow/', params, config)//上传文件
           .then(response => {
-            if (response.status == 200) {
+            console.log(response.data)
+            if (response.data.code == 0) {
               data.onSuccess(response.data)
               this.uploadNum++;
               // 判断是否全部上传完
-              if (this.uploadNum == this.fileList.length) {
+
+            } else {
+              let obj = {}
+              obj.filename = data.file.name;
+              obj.errcode = response.data.code;
+              obj.errmsg = response.data.msg;
+              this.uploadError.push(obj)
+              data.onError()
+              // this.uploadNum++;
+              this.$message.error(`文件上传失败，错误码为：${response.data.code}`);
+            }
+            if (this.uploadNum == this.fileList.length) {
+              // 判断是不是有上传成功的
+              if(this.fileList.length>0){
                 this.$message({
                   showClose: true,
                   message: '文件已上传完成',
                   type: 'success'
                 });
               }
-            } else {
-              this.$message.error(`文件上传失败，错误码为：${response.status}`);
+              setTimeout(()=>{
+                if(this.uploadError.length>0){
+                  this.dialogTableVisible = true
+                }
+              },400)
             }
           })
-          .catch(({err}) => {
+          .catch((err) => {
+
             data.onError()
             this.uploadNum++;
             if (this.uploadNum == this.fileList.length) {
@@ -194,6 +221,7 @@
           });
           return
         }
+
         this.$refs.upload.submit();
       },
       // 上传成功监听
@@ -206,6 +234,10 @@
         this.fileList = fileList//删除某项数据重新对filelist赋值
       },
 
+      // 错误弹窗监听
+      close(){
+        this.uploadError = []
+      }
     },
 
     watch: {
