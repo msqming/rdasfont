@@ -107,7 +107,7 @@
               </div>
 
               <div class="text-center " @click="showAll()"><i class="extra-large"
-                                                              :class="isShowAll?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
+                                                              :class="isShowAll?'el-icon-arrow-down':'el-icon-arrow-up'"></i>
               </div>
             </el-card>
 
@@ -139,33 +139,7 @@
                     </div>
                   </div>
                   <div class="flex align-center">
-<!--                    <el-dropdown trigger="click" @command="handleCommand">-->
-<!--                    <span class="el-dropdown-link">-->
-<!--                      日期:<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--                    </span>-->
-<!--                      <el-dropdown-menu slot="dropdown">-->
-<!--                        <el-dropdown-item command="a" icon="el-icon-s-promotion">最近一天</el-dropdown-item>-->
-<!--                        <el-dropdown-item command="b" icon="el-icon-s-promotion">最近七天</el-dropdown-item>-->
-<!--                        <el-dropdown-item command="c" icon="el-icon-s-promotion">最近三十天</el-dropdown-item>-->
-<!--                      </el-dropdown-menu>-->
-<!--                    </el-dropdown>-->
-
-<!--                    <div class="margin-left-sm">-->
-<!--                      <el-date-picker-->
-<!--                          v-model="value1"-->
-<!--                          type="date"-->
-<!--                          placeholder="选择起始日期">-->
-<!--                      </el-date-picker>-->
-<!--                      ~-->
-<!--                      <el-date-picker-->
-<!--                          v-model="value2"-->
-<!--                          type="date"-->
-<!--                          placeholder="选择结束日期">-->
-<!--                      </el-date-picker>-->
-<!--                    </div>-->
-
                     <el-date-picker
-
                         v-model="value2"
                         type="daterange"
                         align="right"

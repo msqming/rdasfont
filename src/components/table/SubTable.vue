@@ -42,7 +42,6 @@
     data() {
       return {
         sortable: '',
-        sorts:'date'
       }
     },
     props: {
