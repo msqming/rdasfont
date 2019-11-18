@@ -16,14 +16,14 @@
             text-color="#fff"
             active-text-color="#ffd04b"
         >
-          <el-menu-item index="1">首页</el-menu-item>
+          <el-menu-item index="首页">首页</el-menu-item>
           <el-submenu index="数据中心">
             <template slot="title">数据中心</template>
 
-            <el-submenu index="2">
+            <el-submenu index="电商平台数据">
               <template slot="title">电商平台数据</template>
               <el-menu-item index="淘宝 / 天猫">
-                <el-submenu index="2-1-1-1">
+                <el-submenu index="">
                   <template slot="title">淘宝 / 天猫</template>
                   <el-menu-item index="HP官方旗舰店">HP官方旗舰店</el-menu-item>
                   <el-menu-item index="HP儒韵店">HP儒韵店</el-menu-item>
@@ -44,24 +44,22 @@
           <div class=" flex align-center padding-left-sm">
             <div class="margin-right-sm">您当前的位置：</div>
             <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item>首页</el-breadcrumb-item>
-              <el-breadcrumb-item>电商平台数据</el-breadcrumb-item>
-              <el-breadcrumb-item>淘宝 / 天猫</el-breadcrumb-item>
-              <el-breadcrumb-item>HP官方旗舰店</el-breadcrumb-item>
+              <el-breadcrumb-item v-for="item in curpath">{{item}}</el-breadcrumb-item>
+
             </el-breadcrumb>
           </div>
         </el-header>
         <el-container :style="{'height':orderHight+'px'}">
           <!--  侧边栏-->
           <el-aside width="300px" class="sidebar" :style="{'height':'85%','background-color':' #F2F6FC'}">
-            <Sidebar :sideData="sideData" :orderHight="orderHight" @getcur="getcurId"></Sidebar>
+            <Sidebar :defOpt="sideOpt" :sideData="sideData" :orderHight="orderHight" @getcur="getcurId"></Sidebar>
           </el-aside>
           <el-main :style="{'height':'96%'}">
             <!--          模块头部-->
             <div class="idx-header ">
               <el-card>
                 <div class="flex align-center justify-between">
-                  <div class="extra-large text-blod">模块名</div>
+                  <div class="extra-large text-blod">{{sideModelName}}</div>
                   <div class="base pointer flex align-center">
                     <!-- 市场大盘时显示-->
                     <el-dropdown @command="selectStore" size="small" type="primary" class="margin-right-sm"
@@ -85,31 +83,34 @@
               </el-card>
             </div>
 
-            <!--          子类筛选选项-->
-            <el-card class="margin-top-sm">
-              <div class="idx-subnav flex align-start">
-                <div class="flex-sub flex idx-subnav-list">
+            <template v-if="false">
+              <!--         360 子类筛选选项-->
+              <el-card class="margin-top-sm">
+                <div class="idx-subnav flex align-start">
+                  <div class="flex-sub flex idx-subnav-list">
                 <span v-for="(item,index) in opts" :key="index" class="margin-right-xl pointer"
                       :class="curIdx==index?'text-cyan':''" :data-index="index" @click="choosednav">{{item}}</span>
+                  </div>
+                  <div class="text-blue">设置</div>
                 </div>
-                <div class="text-blue">设置</div>
-              </div>
-            </el-card>
+              </el-card>
 
-            <!--         360 子类选项-->
-            <el-card class="margin-top-sm">
-              <div class="flex flex-wrap idx-opt-list">
-                <div class="padding-xs margin-bottom-sm border idx-opt-item pointer" :class="curOpt==index?'bg-cyan':''" v-for="(item,index) in 12" :key="index"
-                     v-if="isShowAll?index<8:index<12" @click="choosedOpt(index)" >
-                  <div class="text-cut">ID 121321231</div>
-                  <div class="text-cut">光影精灵2</div>
+              <!--         360 子类选项-->
+              <el-card class="margin-top-sm">
+                <div class="flex flex-wrap idx-opt-list">
+                  <div class="padding-xs margin-bottom-sm border idx-opt-item pointer"
+                       :class="curOpt==index?'bg-cyan':''" v-for="(item,index) in 12" :key="index"
+                       v-if="isShowAll?index<8:index<12" @click="choosedOpt(index)">
+                    <div class="text-cut">ID 121321231</div>
+                    <div class="text-cut">光影精灵2</div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="text-center " @click="showAll()"><i class="extra-large"
-                                                              :class="isShowAll?'el-icon-arrow-down':'el-icon-arrow-up'"></i>
-              </div>
-            </el-card>
+                <div class="text-center " @click="showAll()"><i class="extra-large"
+                                                                :class="isShowAll?'el-icon-arrow-down':'el-icon-arrow-up'"></i>
+                </div>
+              </el-card>
+            </template>
 
             <!--          选择切换-->
             <div class=" margin-top-sm">
@@ -130,11 +131,11 @@
               <div class="idx-main">
                 <div class="large text-blod marign-bottom-sm flex align-end justify-between margin-top-sm">
                   <div>
-                    <div class="extra-large">標題名</div>
-                    <div class="flex-sub flex margin-top">
+                    <div class="extra-large">{{navlist[navIndex].name}}</div>
+<!--                    个别模块含有-->
+                    <div class="flex-sub flex margin-top" v-if="false">
                       <el-radio-group v-model="radio2" @change="changeRadio">
                         <el-radio v-for="(item,index) in 3" :key="index" :label="index">选项</el-radio>
-
                       </el-radio-group>
                     </div>
                   </div>
@@ -157,35 +158,11 @@
                   </div>
                 </div>
 
-                <!--              选项筛选-->
-                <div class="idx-options margin-bottom-sm margin-top">
-                  <div class=" margin-top-sm margin-bottom-sm padding-lr-xs "
-                       :class="showmore?'flex flex-wrap':'idx-tag'">
-                    <el-tag
-                        class=" margin-bottom-sm pointer tag-Opt"
-                        v-for="(item,index) in tags"
-                        :key="index"
-                        :type="item.ischoosed?'success':'warn'"
-                        @click="pickOpt"
-                        :data-id="index"
-                    >
-                      {{ item.label }} <i class="el-icon-check el-icon--right" v-if="item.ischoosed"></i>
-                    </el-tag>
-
-                    <div class="checkmore" @click="checkmore()" v-if="tags.length>8&!showmore">查看更多</div>
-                  </div>
-                  <div class="flex align-center">
-                    <el-button-group>
-                      <el-button type="primary" size="mini" @click="allPick">全选</el-button>
-                      <el-button type="warning" size="mini" @click="cencerPick">取消</el-button>
-                      <el-button type="primary" size="mini" @click="inservePick">反选</el-button>
-                    </el-button-group>
-                  </div>
-                </div>
-
+                <!--筛选表格数据-->
+                <TableOption :tags="tags" @getTableOpt="getTableOpt"></TableOption>
 
                 <!--              表格-->
-                <subTable :tableData="tableData" :arr="arr" :sorts="sorts"></subTable>
+                <subTable :tableData="tableData" :arr="tableArr" :sorts="sorts"></subTable>
 
                 <!--              分页-->
                 <div class="flex justify-center padding-sm">
@@ -218,7 +195,7 @@
     </el-dialog>
 
     <!--    上传弹窗组件-->
-    <Upload :showLoadBox="isShowLoadBox" @changeShowLoadBox="changeVal"></Upload>
+    <Upload :showLoadBox="isShowLoadBox" :uploadUrl="uploadUrl" @changeShowLoadBox="changeVal"></Upload>
     <!--    管理弹窗-->
     <Manage :manageModel="manageModel" @changeManageModel="changeManageModel"></Manage>
   </div>
@@ -232,6 +209,7 @@
   import DBheader from 'components/header/DBheader';
   import Upload from 'components/upload/Upload';
   import Manage from 'components/manage/Manage';
+  import TableOption from 'components/tableOption/TableOption';
 
   export default {
     name: "home",
@@ -240,7 +218,8 @@
       Sidebar,
       DBheader,
       Upload,
-      Manage
+      Manage,
+      TableOption
     },
     data() {
 
@@ -252,66 +231,10 @@
         id: 2
       }]
 
-      const sideData = [{
-        title: 'aaa',
-        bestList: [{
-          id: 0,
-          name: '大厦1'
-        }, {
-          id: 1,
-          name: '大厦2'
-        }, {
-          id: 2,
-          name: '大厦3'
-        }],
-        moreList: [{
-          id: 3,
-          name: '大厦4'
-        }, {
-          id: 4,
-          name: '大厦5'
-        }, {
-          id: 5,
-          name: '大厦6'
-        }, {
-          id: 6,
-          name: '大厦7'
-        }, {
-          id: 7,
-          name: '大厦8'
-        }]
-      }, {
-        title: 'bbb',
-        bestList: [{
-          id: 0,
-          name: '大厦1'
-        }, {
-          id: 1,
-          name: '大厦2'
-        }, {
-          id: 2,
-          name: '大厦3'
-        }],
-        moreList: [{
-          id: 3,
-          name: '大厦4'
-        }, {
-          id: 4,
-          name: '大厦5'
-        }, {
-          id: 5,
-          name: '大厦6'
-        }, {
-          id: 6,
-          name: '大厦7'
-        }, {
-          id: 7,
-          name: '大厦8'
-        }]
-      }]
-
       return {
-        sideData: sideData,//侧边栏数据
+        sideOpt:1,//侧边栏默认选中
+        curpath: [],//面包屑数据
+        sideData: [],//侧边栏数据
         uploadNum: 0,//已上传文件个数
         tableData: [],
         manageList: [],
@@ -321,33 +244,26 @@
         dialogTableVisible: false,//控制日志弹窗
         manageModel: false,//控制管理弹窗
         navlist: list,//导航列表
-        curOpt:0,//360子选择
+        navIndex:0,
+        curOpt: 0,//360子选择
         value1: '',//日期值
         value2: '',//日期值
-        tags: [{type: '', label: '标签一标签一标签一', ischoosed: false},
-          {type: 'success', label: '标签二标签二标签二', ischoosed: true},
-          {type: 'info', label: '标签三标签三标签三标签三', ischoosed: false},
-          {type: 'danger', label: '标签四标签四标签四', ischoosed: false},
-          {type: 'warning', label: '标签五标签五', ischoosed: false},
-          {type: '', label: '标签一', ischoosed: false},
-          {type: 'success', label: '标签二标签二标签二', ischoosed: true},
-          {type: 'info', label: '标签三', ischoosed: false},
-          {type: 'danger', label: '标签三标签三', ischoosed: false},
-          {type: 'warning', label: '标签五', ischoosed: false}],
-        arr: [],
-        sortrow: {prop: 'date', order: 'descending'},//表头是否排序
+        tags: [],//表格筛选项
+        arr: [],//存储用于控制展示表格表头的数组
+        tableArr: [],//实际用于控制展示表格表头的数组
         currentPage: 1,//表格当前页码
         store: [{id: 0, name: '全部'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
         store1: [{id: 0, name: '请选择'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
         storeIndex: 0,//选中的店铺来源index
         storeIndex1: 0,
         isShowLoadBox: false,//打开上传弹窗
-        showmore: false,//查看更多标签
         opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
         curIdx: 0,//当前选中
         isShowAll: false,//是否查看更多
         radio2: 2,
         sorts: '',//决定表格排序的字段
+        uploadUrl:'',
+        sideModelName:'',
 
         pickerOptions: {// 日期
           shortcuts: [{
@@ -375,8 +291,8 @@
               picker.$emit('pick', [start, end]);
             }
           }],
-          onPick:(dateRange=>{//获取选择的时间回调
-            if(!dateRange.maxDate) {
+          onPick: (dateRange => {//获取选择的时间回调
+            if (!dateRange.maxDate) {
               return;
             }
             console.log(parseTime(dateRange.minDate))
@@ -390,7 +306,28 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
-        console.log('Hi, ' + e)
+        let sideIdx = this.sideData[e.index].fields[e.idx].name,
+          sideItem = e.name,
+        curpath = this.curpath
+        if (curpath.length >= 5) {
+          curpath.splice(-1, 2)
+        }
+        this.sideModelName = sideItem;
+        // 匹配上传路径
+        switch (sideItem) {
+          case '流量':
+            this.uploadUrl='/storage/flow/';
+            break;
+          case '品类':
+            this.uploadUrl='/storage/category/';
+            break;
+          case '取数':
+            this.uploadUrl='/storage/fetch/';
+            break;
+        }
+        // curpath.push(sideIdx)
+        // curpath.push(sideItem)
+        // this.curpath = curpath
       },
 
       //改变显示上传弹窗的值
@@ -401,12 +338,13 @@
       // 导航栏选择
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
-
+        this.curpath = keyPath
       },
 
       // 子导航选择
       selectSub(key, keyPath) {
         console.log(key, keyPath);
+        this.navIndex = Number(key - 1)
       },
 
       // 选择最近几天日期
@@ -422,51 +360,22 @@
         this.storeIndex1 = command
       },
 
-      // 点击查看更多
-      checkmore() {
-        this.showmore = true
-      },
-
-      // 点击选择标签
-      pickOpt(e) {
-        let idx = e.target.dataset.id;
-        this.tags.forEach((item, index) => {
-          if (idx == index) {
-            item.ischoosed = !item.ischoosed;
-            this.tags[idx] = item
-          }
-
-        })
-      },
-
       // 点击选择360子选项
-      choosedOpt(index){
+      choosedOpt(index) {
         this.curOpt = index
       },
 
-      // 全选标签
-      allPick() {
-        this.tags.forEach((item, index) => {
-          item.ischoosed = true;
-          this.tags[index] = item
-        })
+      // 监听筛选表格返回的字段
+      getTableOpt(e) {
+        let selArr = []
+        for (let i in e) {
+          if (e[i].ischoosed == true) {
+            selArr.push(this.arr[i])
+          }
+        }
+        this.tableArr = selArr
       },
 
-      //取消选择
-      cencerPick() {
-        this.tags.forEach((item, index) => {
-          item.ischoosed = false;
-          this.tags[index] = item
-        })
-      },
-
-      // 反选标签
-      inservePick() {
-        this.tags.forEach((item, index) => {
-          item.ischoosed = !item.ischoosed;
-          this.tags[index] = item
-        })
-      },
       // 分页操作
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -511,7 +420,7 @@
       //点击下载事件
       handleDownload() {
         console.log(this.tableData)
-        if(this.tableData.length<=0){
+        if (this.tableData.length <= 0) {
           this.$message('表格无数据');
           return
         }
@@ -552,38 +461,57 @@
         });
         that.$axios.post("/api/v1/storage/").then(res => {
           loading.close();
-          console.log(res.data,'aaa')
+          console.log(res.data, 'aaa')
           if (res.data.code == 0) {
             for (let i in res.data.data) {
               res.data.data[i].id = Number(i) + 1;
             }
             that.tableData = res.data.data;
-            let arr = []
+            let arr = [];//存储表格头数据
+            let arr2 = [];//存储tags筛选数据
             for (let i in res.data.data[0]) {
-              let obj = {}
+              let obj = {};
+              let tag = {}
               if (i == 'id') {
                 obj.label = '序号';
                 obj.prop = 'id';
                 obj.type = 'normal';
 
+                tag.type = 'info';
+                tag.label = '序号';
+                tag.ischoosed = true
+
+                arr.push(obj);
+                arr2.push(tag)
               } else if (i != 'create_date' && i != 'filetabinfo' && i != 'last_date') {
                 obj.label = i;
                 obj.prop = i;
                 obj.type = 'normal';
+
+                tag.type = 'info';
+                tag.label = i;
+                tag.ischoosed = false
+
+                arr.push(obj);
+                arr2.push(tag)
               }
-              arr.push(obj)
+
             }
+
             // arr.splice(-1, 1)//把多余的一项去掉
-            console.log(that.tableData)
             // 再次进行改造
             for (let i in res.data.title) {
               if (i != 0 && i != 7 && i != 8 && i != 9) {
-                arr[i].label = res.data.title[i]
+                arr[i].label = res.data.title[i];
+                arr2[i].label = res.data.title[i]
               }
             }
+            that.tableArr = arr;
             that.arr = arr;
+            that.tags = arr2;
+            console.log(that.tags)
             that.sorts = 'uv'//可调节排序的字段
-          }else{
+          } else {
             this.$message(res.data.msg);
             that.tableData = that.tableData
           }
@@ -591,9 +519,27 @@
           loading.close();
         })
       },
+
+      // 获取侧边栏数据
+      getSideBar(){
+        this.$axios.post("/api/v1/leftcol/").then(res=>{
+          if(res.data.code==0){
+            this.sideData = res.data.data;
+            this.sideOpt = this.sideData[0].fields[0].fields[0].id
+          }else{
+            this.$message.error('获取侧边栏数据失败')
+            this.sideData = []
+          }
+        }).catch(err=>{
+          this.$message.error('获取侧边栏数据失败')
+          this.sideData = []
+          console.log(err,'侧边栏err')
+        })
+      },
     },
 
     created() {
+      this.getSideBar()
       this.getvisitor()
     },
 

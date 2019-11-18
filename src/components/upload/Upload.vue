@@ -76,6 +76,10 @@
       showLoadBox: {
         type: Boolean,
         default: false
+      },
+      uploadUrl:{
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -163,7 +167,7 @@
             data.onProgress({percent: percent})
           },
         };  //添加请求头
-        this.$axios.post('/storage/flow/', params, config)//上传文件
+        this.$axios.post(this.uploadUrl, params, config)//上传文件
           .then(response => {
             console.log(response.data)
             if (response.data.code == 0) {

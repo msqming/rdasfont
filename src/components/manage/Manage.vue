@@ -50,7 +50,7 @@
         });
         let data = {
           // today: 2019 - 11 - 12,
-          user: 'root'
+          user: 'admin'
         }
         this.$axios.post('/api/v1/uploadlog/', data).then(res => {
           loading.close()
