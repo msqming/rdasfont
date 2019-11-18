@@ -224,10 +224,10 @@
     data() {
 
       const list = [{
-        name: 'dachui',
+        name: '时段分布',
         id: 1
       }, {
-        name: 'dachui1',
+        name: '地域分布',
         id: 2
       }]
 
@@ -262,7 +262,7 @@
         isShowAll: false,//是否查看更多
         radio2: 2,
         sorts: '',//决定表格排序的字段
-        uploadUrl:'',
+        uploadUrl:'/storage/flow/',
         sideModelName:'',
 
         pickerOptions: {// 日期
@@ -344,7 +344,15 @@
       // 子导航选择
       selectSub(key, keyPath) {
         console.log(key, keyPath);
-        this.navIndex = Number(key - 1)
+        this.navIndex = Number(key - 1);
+        switch (this.navIndex) {
+          case 0:
+            this.getvisitor('/api/v1/flow/period/');
+            break;
+          case 1:
+            this.getvisitor('/api/v1/flow/area/');
+            break;
+        }
       },
 
       // 选择最近几天日期
@@ -387,7 +395,8 @@
       //子类导航切换
       choosednav(e) {
         let index = e.target.dataset.index;
-        this.curIdx = index
+        this.curIdx = index;
+
       },
 
       // 打开上传弹窗
@@ -451,7 +460,7 @@
         json2excel(excelDatas, dateName, true, "xlsx")
       },
       // 获取访客分析数据
-      getvisitor() {
+      getvisitor(url) {
         const that = this;
         const loading = this.$loading({
           lock: true,
@@ -459,7 +468,7 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.1)'
         });
-        that.$axios.post("/api/v1/storage/").then(res => {
+        that.$axios.post(url).then(res => {
           loading.close();
           console.log(res.data, 'aaa')
           if (res.data.code == 0) {
@@ -525,7 +534,11 @@
         this.$axios.post("/api/v1/leftcol/").then(res=>{
           if(res.data.code==0){
             this.sideData = res.data.data;
-            this.sideOpt = this.sideData[0].fields[0].fields[0].id
+
+            this.sideOpt = this.sideData[0].fields[0].fields[0].id;
+            this.sideModelName=this.sideData[0].fields[0].fields[0].name;
+
+            this.getvisitor('/api/v1/flow/period/')
           }else{
             this.$message.error('获取侧边栏数据失败')
             this.sideData = []
@@ -536,6 +549,8 @@
           console.log(err,'侧边栏err')
         })
       },
+
+
     },
 
     created() {

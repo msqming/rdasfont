@@ -56,6 +56,13 @@
           loading.close()
           console.log(res)
           if (res.data.code == 0) {
+            for(let i in res.data.data){
+              let timer = res.data.data[i].create_date
+              let d = new Date(timer);
+              let times=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+              res.data.data[i].create_date = times
+            }
+
             this.manageList = res.data.data
           }else {
             this.$message.error(`${res.data.msg}`);
