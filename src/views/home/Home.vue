@@ -162,7 +162,7 @@
                 <TableOption :tags="tags" @getTableOpt="getTableOpt"></TableOption>
 
                 <!--              表格-->
-                <subTable :tableData="tableData" :arr="tableArr" :sorts="sorts"></subTable>
+                <subTable :tableData="tableData" :arr="tableArr"></subTable>
 
                 <!--              分页-->
                 <div class="flex justify-center padding-sm">
@@ -261,7 +261,7 @@
         curIdx: 0,//当前选中
         isShowAll: false,//是否查看更多
         radio2: 2,
-        sorts: '',//决定表格排序的字段
+        // sorts: '',//决定表格排序的字段
         uploadUrl:'/storage/flow/',
         sideModelName:'',
 
@@ -306,13 +306,13 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
-        let sideIdx = this.sideData[e.index].fields[e.idx].name,
-          sideItem = e.name,
-        curpath = this.curpath
-        if (curpath.length >= 5) {
-          curpath.splice(-1, 2)
-        }
-        this.sideModelName = sideItem;
+        let sideItem =  this.sideData[e.index].name,
+          sideSubItem = e.parentname,
+          sideLastItem = e.name;
+          let curpath = new Array(sideItem,sideSubItem,sideLastItem);
+        console.log(curpath)
+
+        this.sideModelName = sideLastItem;
         // 匹配上传路径
         switch (sideItem) {
           case '流量':
@@ -325,9 +325,7 @@
             this.uploadUrl='/storage/fetch/';
             break;
         }
-        // curpath.push(sideIdx)
-        // curpath.push(sideItem)
-        // this.curpath = curpath
+        this.curpath = curpath
       },
 
       //改变显示上传弹窗的值
@@ -338,7 +336,6 @@
       // 导航栏选择
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
-        this.curpath = keyPath
       },
 
       // 子导航选择
@@ -499,7 +496,7 @@
 
                 tag.type = 'info';
                 tag.label = i;
-                tag.ischoosed = false
+                tag.ischoosed = true
 
                 arr.push(obj);
                 arr2.push(tag)
@@ -509,17 +506,17 @@
 
             // arr.splice(-1, 1)//把多余的一项去掉
             // 再次进行改造
-            for (let i in res.data.title) {
-              if (i != 0 && i != 7 && i != 8 && i != 9) {
-                arr[i].label = res.data.title[i];
-                arr2[i].label = res.data.title[i]
+            for (let i in res.data.thead) {
+              if (i != 0 ) {
+                arr[i].label = res.data.thead[i];
+                arr2[i].label = res.data.thead[i]
               }
             }
             that.tableArr = arr;
             that.arr = arr;
             that.tags = arr2;
             console.log(that.tags)
-            that.sorts = 'uv'//可调节排序的字段
+            // that.sorts = 'uv'//可调节排序的字段
           } else {
             this.$message(res.data.msg);
             that.tableData = that.tableData
@@ -533,7 +530,14 @@
       getSideBar(){
         this.$axios.post("/api/v1/leftcol/").then(res=>{
           if(res.data.code==0){
+
             this.sideData = res.data.data;
+            // 编辑面包屑
+            let sideItem =  this.sideData[0].name,
+              sideSubItem = this.sideData[0].fields[0].name,
+              sideLastItem = this.sideData[0].fields[0].fields[0].name;
+            let curpath = new Array(sideItem,sideSubItem,sideLastItem);
+            this.curpath = curpath
 
             this.sideOpt = this.sideData[0].fields[0].fields[0].id;
             this.sideModelName=this.sideData[0].fields[0].fields[0].name;

@@ -7,7 +7,7 @@
             :stripe="true"
             lazy
             border
-            :default-sort="{prop:sorts,order:'descending'}"
+
   >
     <!--  可勾选-->
     <!--                <el-table-column-->
@@ -18,7 +18,7 @@
     <template v-for="(item,index) in arr">
 
       <el-table-column :prop="item.prop" :label="item.label" :key="index" :width="index==0?60:''"
-                       v-if="item.type==='normal'" :sortable="item.prop === sorts?true:false" resizable
+                       v-if="item.type==='normal'" resizable
                        show-overflow-tooltip>
 
       </el-table-column>
@@ -53,17 +53,17 @@
         type: Array,
         default: []
       },
-      sorts: {
-        type: String,
-        default: ''
-      }
+      // sorts: {
+      //   type: String,
+      //   default: ''
+      // }
 
     },
 
 
     mounted() {
       // 例子
-      console.log(this.sorts)
+      // console.log(this.sorts)
       // this.sorts = 'date';//决定控制列的排序
 
     }
