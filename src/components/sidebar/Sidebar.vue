@@ -11,7 +11,7 @@
         <div class="flex-sub text-cut padding-lr-xs text-center" v-for="(item,idx) in sideData[0].fields[0].fields"
              :key="idx" v-if="idx<3"><span
             class="sidebar-item-son-item pointer" :class="curItem==index&&curOpt==item.id?'text-cyan':''"
-            @click="getSubData(item.name,item.id,sideData[0].fields[0].name,index,idx)">{{item.name}}</span>
+            @click="getSubData(item.name,item.id,sideData[0].fields[0].name,index,item.url)">{{item.name}}</span>
         </div>
       </div>
 
@@ -22,7 +22,7 @@
             <div class=" base sub-menu-list">
               <div class="margin-bottom-sm sub-menu-item text-center" :class="curItem==index&&curOpt==lowItem.id?'text-cyan':''"
                    v-for="(lowItem,subidx) in subitem.fields"
-                   :key="subidx" @click="getSubData(lowItem.name,lowItem.id,subitem.name,index,idx)">
+                   :key="subidx" @click="getSubData(lowItem.name,lowItem.id,subitem.name,index,lowItem.url)">
                 {{lowItem.name}}
               </div>
             </div>
@@ -61,13 +61,13 @@
 
     },
     methods: {
-      getSubData(name,id, parentname, index,idx) {
+      getSubData(name,id, parentname, index,url) {
         let data = {
           name,
           id,
           parentname,
           index,
-          idx
+          url
         }
         this.$emit('getcur', data,)
         this.curItem = index;

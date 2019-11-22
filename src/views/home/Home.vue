@@ -83,20 +83,22 @@
               </el-card>
             </div>
 
-            <template v-if="false">
+            <template>
               <!--         360 子类筛选选项-->
-              <el-card class="margin-top-sm">
+<!--              -->
+              <el-card class="margin-top-sm" v-if="sideModelParams.hardwareList">
                 <div class="idx-subnav flex align-start">
                   <div class="flex-sub flex idx-subnav-list">
                 <span v-for="(item,index) in opts" :key="index" class="margin-right-xl pointer"
                       :class="curIdx==index?'text-cyan':''" :data-index="index" @click="choosednav">{{item}}</span>
                   </div>
-                  <div class="text-blue">设置</div>
+<!--                  <div class="text-blue">设置</div>-->
                 </div>
               </el-card>
 
               <!--         360 子类选项-->
-              <el-card class="margin-top-sm">
+<!--              -->
+              <el-card class="margin-top-sm" v-if="sideModelParams.productList">
                 <div class="flex flex-wrap idx-opt-list">
                   <div class="padding-xs margin-bottom-sm border idx-opt-item pointer"
                        :class="curOpt==index?'bg-cyan':''" v-for="(item,index) in 12" :key="index"
@@ -113,7 +115,8 @@
             </template>
 
             <!--          选择切换-->
-            <div class=" margin-top-sm">
+<!--            -->
+            <div class=" margin-top-sm" v-if="sideModelParams.navList!=undefined&&sideModelParams.navList.length>1">
               <el-menu
                   :default-active="default1"
                   class="el-menu-demo"
@@ -121,7 +124,7 @@
                   @select="selectSub"
                   text-color="#333"
                   active-text-color="#ffd04b">
-                <el-menu-item :index="item.id.toString()" v-for="(item,index) in navlist" :key="index">{{item.name}}
+                <el-menu-item :index="index.toString()" v-for="(item,index) in sideModelParams.navList" :key="index">{{item.name}}
                 </el-menu-item>
               </el-menu>
             </div>
@@ -131,9 +134,10 @@
               <div class="idx-main">
                 <div class="large text-blod marign-bottom-sm flex align-end justify-between margin-top-sm">
                   <div>
-                    <div class="extra-large">{{navlist[navIndex].name}}</div>
+                    <div class="extra-large" v-if="sideModelParams.navList">{{sideModelParams.navList[navIndex].name}}</div>
 <!--                    个别模块含有-->
-                    <div class="flex-sub flex margin-top" v-if="false">
+<!--                    -->
+                    <div class="flex-sub flex margin-top" v-if="sideModelParams.categoryList">
                       <el-radio-group v-model="radio2" @change="changeRadio">
                         <el-radio v-for="(item,index) in 3" :key="index" :label="index">选项</el-radio>
                       </el-radio-group>
@@ -159,7 +163,7 @@
                 </div>
 
                 <!--筛选表格数据-->
-                <TableOption :tags="tags" @getTableOpt="getTableOpt"></TableOption>
+                <TableOption :tags="tags" @getTableOpt="getTableOpt" v-if="tableData.length>0"></TableOption>
 
                 <!--              表格-->
                 <subTable :tableData="tableData" :arr="tableArr"></subTable>
@@ -223,14 +227,6 @@
     },
     data() {
 
-      const list = [{
-        name: '时段分布',
-        id: 1
-      }, {
-        name: '地域分布',
-        id: 2
-      }]
-
       return {
         sideOpt:1,//侧边栏默认选中
         curpath: [],//面包屑数据
@@ -240,10 +236,9 @@
         manageList: [],
         orderHight: 1000,
         activeIndex2: 'HP官方旗舰店',//控制navmenu高亮
-        default1: '1',
+        default1: '0',
         dialogTableVisible: false,//控制日志弹窗
         manageModel: false,//控制管理弹窗
-        navlist: list,//导航列表
         navIndex:0,
         curOpt: 0,//360子选择
         value1: '',//日期值
@@ -252,10 +247,7 @@
         arr: [],//存储用于控制展示表格表头的数组
         tableArr: [],//实际用于控制展示表格表头的数组
         currentPage: 1,//表格当前页码
-        store: [{id: 0, name: '全部'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
-        store1: [{id: 0, name: '请选择'}, {id: 1, name: '天猫'}, {id: 2, name: '淘宝'}],
-        storeIndex: 0,//选中的店铺来源index
-        storeIndex1: 0,
+
         isShowLoadBox: false,//打开上传弹窗
         opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
         curIdx: 0,//当前选中
@@ -263,7 +255,8 @@
         radio2: 2,
         // sorts: '',//决定表格排序的字段
         uploadUrl:'/storage/flow/',
-        sideModelName:'',
+        sideModelName:'',//侧边栏模块名
+        sideModelParams:{},//侧边栏模块内部参数
 
         pickerOptions: {// 日期
           shortcuts: [{
@@ -308,24 +301,27 @@
       getcurId(e) {
         let sideItem =  this.sideData[e.index].name,
           sideSubItem = e.parentname,
-          sideLastItem = e.name;
-          let curpath = new Array(sideItem,sideSubItem,sideLastItem);
+          sideLastItem = e.name,
+          curpath = new Array(sideItem,sideSubItem,sideLastItem);
+        let Url;
+        console.log(e.url)
+        if(e.url){
+          if(e.url.indexOf('/api/v1')!=-1){
+             Url = e.url;
+          }else{
+            Url = '/api/v1'+e.url;
+          }
+        }
+        let param = {
+          id : e.id
+        }
         console.log(curpath)
 
         this.sideModelName = sideLastItem;
-        // 匹配上传路径
-        switch (sideItem) {
-          case '流量':
-            this.uploadUrl='/storage/flow/';
-            break;
-          case '品类':
-            this.uploadUrl='/storage/category/';
-            break;
-          case '取数':
-            this.uploadUrl='/storage/fetch/';
-            break;
-        }
-        this.curpath = curpath
+        this.uploadUrl=e.url;//上传路径
+        this.curpath = curpath;
+
+        this.getParam(Url,param)
       },
 
       //改变显示上传弹窗的值
@@ -341,15 +337,9 @@
       // 子导航选择
       selectSub(key, keyPath) {
         console.log(key, keyPath);
-        this.navIndex = Number(key - 1);
-        switch (this.navIndex) {
-          case 0:
-            this.getvisitor('/api/v1/flow/period/');
-            break;
-          case 1:
-            this.getvisitor('/api/v1/flow/area/');
-            break;
-        }
+        this.navIndex = Number(key);
+        let api_url = this.sideModelParams.navList[this.navIndex].api_url;
+        this.getvisitor(api_url);
       },
 
       // 选择最近几天日期
@@ -456,6 +446,23 @@
         //   引入的函数
         json2excel(excelDatas, dateName, true, "xlsx")
       },
+
+      // 获取模块内字段参数
+      getParam(url,params){
+        this.$axios.post(url,params).then(res=>{
+          if(res.data.code=='0'){
+            this.sideModelParams = res.data.data;
+            let api_url = res.data.data.navList[0].api_url;
+            this.getvisitor(api_url)
+          }else{
+            this.sideModelParams = null
+          }
+        }).catch(err=>{
+          this.$message.error(err.data.msg)
+          console.log(err,'获取模块内字段参数')
+        })
+      },
+
       // 获取访客分析数据
       getvisitor(url) {
         const that = this;
@@ -504,7 +511,6 @@
 
             }
 
-            // arr.splice(-1, 1)//把多余的一项去掉
             // 再次进行改造
             for (let i in res.data.thead) {
               if (i != 0 ) {
@@ -530,19 +536,25 @@
       getSideBar(){
         this.$axios.post("/api/v1/leftcol/").then(res=>{
           if(res.data.code==0){
+            if(res.data.data){
+              this.sideData = res.data.data;
+              // 编辑面包屑
+              let sideItem =  this.sideData[0].name,
+                sideSubItem = this.sideData[0].fields[0].name,
+                sideLastItem = this.sideData[0].fields[0].fields[0].name,
+                curpath = new Array(sideItem,sideSubItem,sideLastItem);
+              this.curpath = curpath
 
-            this.sideData = res.data.data;
-            // 编辑面包屑
-            let sideItem =  this.sideData[0].name,
-              sideSubItem = this.sideData[0].fields[0].name,
-              sideLastItem = this.sideData[0].fields[0].fields[0].name;
-            let curpath = new Array(sideItem,sideSubItem,sideLastItem);
-            this.curpath = curpath
+              this.sideOpt = this.sideData[0].fields[0].fields[0].id;
+              this.sideModelName=this.sideData[0].fields[0].fields[0].name;
 
-            this.sideOpt = this.sideData[0].fields[0].fields[0].id;
-            this.sideModelName=this.sideData[0].fields[0].fields[0].name;
+              let url = this.sideData[0].fields[0].fields[0].url;
+              let param = {
+                id : this.sideOpt
+              }
+              this.getParam(url,param)
+            }
 
-            this.getvisitor('/api/v1/flow/period/')
           }else{
             this.$message.error('获取侧边栏数据失败')
             this.sideData = []
@@ -558,8 +570,20 @@
     },
 
     created() {
-      this.getSideBar()
-      this.getvisitor()
+      console.log(this.$local.get('userInfo'))
+      if(!this.$local.get('userInfo')){
+        this.$message('登录已过期或者未登录，请重新登录');
+        setTimeout(()=>{
+          let data = {
+            url:'/home'
+          }
+          this.$router.push({path:'/Login',query:data})
+        },500)
+      }
+
+      // 获取侧边栏数据
+      this.getSideBar();
+
     },
 
     mounted: function () {
@@ -569,7 +593,17 @@
       console.log(orderHight)
       that.orderHight = orderHight - 350
       // document.getElementById('order-list').style.height = orderHight + 'px'
-    }
+    },
+
+    // 离开页面时
+    // beforeRouteLeave(to,from,next){
+    //   console.log(to,'to')
+    //   if(to.path=='/Login'){
+    //     next(false)
+    //   }else{
+    //     next()
+    //   }
+    // },
 
 
   }

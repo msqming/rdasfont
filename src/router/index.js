@@ -2,12 +2,20 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 
-
 var router = new Router({
   routes:[{
     path: '/',
-    redirect: '/home',
+    redirect: '/Login',
   },{
+    path: '/Login',
+    name: 'Login',
+    component: () =>
+      import ('views/login/Login.vue'),
+    meta: {
+      title: '登录'
+    }
+  },
+    {
     path: '/home',
     name: 'Home',
     component: () =>
@@ -16,24 +24,26 @@ var router = new Router({
       title: '首页'
     }
   },{
-    path: '/visitor',
-    name: 'visitor',
+    path: '/manageAPI',
+    name: 'ManageAPI',
     component: () =>
-      import ('views/visitor/Visitor.vue'),
+      import ('views/manageAPI/ManageAPI.vue'),
     meta: {
-      title: '访客分析'
+      title: '接口管理'
+    },beforeEnter:(to,from,next)=>{
+      // 判断是否是超级管理员
+      if(true){
+        next()
+      }else{
+        this.$message('暂无权限')
+        next(false)
+      }
     }
   },]
 
 })
 
-router.beforeEach((to, from, next) => {
-  /* 路由发生变化修改页面title */
-  if (to.meta.title) {
-    document.title = to.meta.title
-  }
-  next()
-})
+
 
 export default router;
 

@@ -5,6 +5,10 @@
     </div>
     <div class="flex flex-sub justify-end header-right bg-black">
       <div class="flex align-center ">
+        <div class="margin-right-sm text-white pointer" @click="linkto('/ManageAPI')">
+          <i class="el-icon-s-order large"></i>
+          api管理
+        </div>
         <el-dropdown class="head-drop">
           <el-badge value="new" class="item">
             <i class="el-icon-message-solid text-white large" style="margin-right: 15px"></i>
@@ -31,10 +35,10 @@
           <el-avatar :size="40" src="https://empty" @error="errorHandler">
             <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
           </el-avatar>
-          <span class="text-cut margin-lr-xs text-white">用户名啊啊啊啊</span>
+          <span class="text-cut margin-lr-xs text-white">{{userInfo.nickname||儒韵BI}}</span>
         </div>
 
-        <span class="exit padding-right text-white" onselectstart="return false;" unselectable="on">退出登录</span>
+        <span class="exit padding-right text-white" onselectstart="return false;" unselectable="on" @click="exit">退出登录</span>
       </div>
     </div>
   </div>
@@ -46,13 +50,31 @@
         props:{},
         data(){
             return {
-
+              userInfo:this.$local.get('userInfo')
             }
         },
         methods:{
             errorHandler() {
                 return true
             },
+
+          linkto(url){
+              if(this.$local.get('userInfo').nickname!='root'){
+                this.$message.error('暂无权限');
+                return
+              }
+              this.$router.push({
+                path:url,
+                query:'/ManageAPI'
+              })
+          },
+
+          exit(){
+            this.$router.push({
+              path:'/Login'
+
+            })
+          }
         }
     }
 </script>
