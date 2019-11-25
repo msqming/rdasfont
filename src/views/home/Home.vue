@@ -300,12 +300,12 @@
           sideLastItem = e.name||'',
           curpath = new Array(sideItem,sideSubItem,sideLastItem)||'';
         let Url;
-        // this.default1 = '1';
-        if(e.url){
+        console.log(e.subUrl)
+        if(e.subUrl){
           if(e.url.indexOf('/api/v1')!=-1){
-             Url = e.url;
+            Url = '/api/v1'+e.subUrl;
           }else{
-            Url = '/api/v1'+e.url;
+            Url = e.subUrl;
           }
         }
         let param = {
