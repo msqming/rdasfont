@@ -295,7 +295,6 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
-        console.log(this.sideData,'this.sideData',e)
         let sideItem =  this.sideData[e.index].name||'',
           sideSubItem = e.parentname||'',
           sideLastItem = e.name||'',
@@ -319,7 +318,6 @@
         this.prevPage='';
         this.sideModelName = sideLastItem;
         this.uploadUrl=e.url;//上传路径
-        console.log(e.url,'========e.url')
         this.curpath = curpath;
         this.tableData = [];
         this.tableArr = [];
@@ -353,7 +351,6 @@
         this.tableUrl = '';
         this.currentPage = 1;
         this.$forceUpdate();
-        console.log(this.navIndex,'navIndex');
 
         let api_url = this.sideModelParams.navList[this.navIndex].api_url;
         this.tableUrl =api_url
