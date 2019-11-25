@@ -52,9 +52,8 @@
           // today: 2019 - 11 - 12,
           user: 'admin'
         }
-        this.$axios.post('/api/v1/uploadlog/', data).then(res => {
+        this.$axios.get('/api/v1/uploadlog/', data).then(res => {
           loading.close()
-          console.log(res)
           if (res.data.code == 0) {
             for(let i in res.data.data){
               let timer = res.data.data[i].create_date

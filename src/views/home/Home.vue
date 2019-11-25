@@ -61,16 +61,7 @@
                 <div class="flex align-center justify-between">
                   <div class="extra-large text-blod">{{sideModelName}}</div>
                   <div class="base pointer flex align-center">
-                    <!-- 市场大盘时显示-->
-                    <el-dropdown @command="selectStore" size="small" type="primary" class="margin-right-sm"
-                                 v-if="false">
-                      {{store[storeIndex].name}}
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item v-for="(item,index) in store" :key="index" :command="index">{{item.name}}
-                        </el-dropdown-item>
 
-                      </el-dropdown-menu>
-                    </el-dropdown>
                     <el-button type="primary" @click="openUpLoad()">上传<i class="el-icon-upload el-icon--right"></i>
                     </el-button>
                     <el-button type="warning" @click="toggleManage">管理<i
@@ -124,7 +115,7 @@
                   @select="selectSub"
                   text-color="#333"
                   active-text-color="#ffd04b">
-                <el-menu-item :index="index.toString()" v-for="(item,index) in sideModelParams.navList" :key="index">{{item.name}}
+                <el-menu-item :index="(index+1).toString()" v-for="(item,index) in sideModelParams.navList" :key="index">{{item.name}}
                 </el-menu-item>
               </el-menu>
             </div>
@@ -134,7 +125,7 @@
               <div class="idx-main">
                 <div class="large text-blod marign-bottom-sm flex align-end justify-between margin-top-sm">
                   <div>
-                    <div class="extra-large" v-if="sideModelParams.navList">{{sideModelParams.navList[navIndex].name}}</div>
+                    <div class="extra-large" v-if="sideModelParams.navList!==undefined&&sideModelParams.navList.length>0">{{sideModelParams.navList[navIndex].name}}</div>
 <!--                    个别模块含有-->
 <!--                    -->
                     <div class="flex-sub flex margin-top" v-if="sideModelParams.categoryList">
@@ -176,9 +167,10 @@
                       :current-page.sync="currentPage"
                       :page-size="20"
                       layout=" prev, pager, next"
-                      :total="500"
+                      :total="count"
                       prev-text="上一页"
                       next-text="下一页"
+                      :hide-on-single-page="count<=20"
                   >
                   </el-pagination>
                 </div>
@@ -236,7 +228,7 @@
         manageList: [],
         orderHight: 1000,
         activeIndex2: 'HP官方旗舰店',//控制navmenu高亮
-        default1: '0',
+        default1: '1',
         dialogTableVisible: false,//控制日志弹窗
         manageModel: false,//控制管理弹窗
         navIndex:0,
@@ -247,6 +239,8 @@
         arr: [],//存储用于控制展示表格表头的数组
         tableArr: [],//实际用于控制展示表格表头的数组
         currentPage: 1,//表格当前页码
+        count:0,//表格数据总数
+        tableUrl:'',//表格请求连接
 
         isShowLoadBox: false,//打开上传弹窗
         opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
@@ -258,6 +252,8 @@
         sideModelName:'',//侧边栏模块名
         sideModelParams:{},//侧边栏模块内部参数
 
+        nextPage:'',//下一页url
+        prevPage:'',//上一页url
         pickerOptions: {// 日期
           shortcuts: [{
             text: '最近一天',
@@ -299,12 +295,13 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
-        let sideItem =  this.sideData[e.index].name,
-          sideSubItem = e.parentname,
-          sideLastItem = e.name,
-          curpath = new Array(sideItem,sideSubItem,sideLastItem);
+        console.log(this.sideData,'this.sideData',e)
+        let sideItem =  this.sideData[e.index].name||'',
+          sideSubItem = e.parentname||'',
+          sideLastItem = e.name||'',
+          curpath = new Array(sideItem,sideSubItem,sideLastItem)||'';
         let Url;
-        console.log(e.url)
+        // this.default1 = '1';
         if(e.url){
           if(e.url.indexOf('/api/v1')!=-1){
              Url = e.url;
@@ -315,11 +312,21 @@
         let param = {
           id : e.id
         }
-        console.log(curpath)
-
+        console.log(sideItem,sideSubItem,sideLastItem)
+        this.tableUrl = '';
+        this.currentPage = 1;
+        this.count = '';
+        this.nextPage='';
+        this.prevPage='';
         this.sideModelName = sideLastItem;
         this.uploadUrl=e.url;//上传路径
         this.curpath = curpath;
+        this.tableData = [];
+        this.tableArr = [];
+        this.arr = [];
+        this.tags = [];
+        this.sideModelParams={};
+        this.$forceUpdate();
 
         this.getParam(Url,param)
       },
@@ -336,9 +343,20 @@
 
       // 子导航选择
       selectSub(key, keyPath) {
-        console.log(key, keyPath);
-        this.navIndex = Number(key);
+
+        this.navIndex = Number(key)-1;
+        this.tableData = [];
+        this.tableArr = [];
+        this.arr = [];
+        this.tags = [];
+        this.count = 0;
+        this.tableUrl = '';
+        this.currentPage = 1;
+        this.$forceUpdate();
+        console.log(this.navIndex,'navIndex');
+
         let api_url = this.sideModelParams.navList[this.navIndex].api_url;
+        this.tableUrl =api_url
         this.getvisitor(api_url);
       },
 
@@ -350,10 +368,7 @@
       selectStore(command) {
         this.storeIndex = command
       },
-      // 选择上传到店铺
-      selectToStore(command) {
-        this.storeIndex1 = command
-      },
+
 
       // 点击选择360子选项
       choosedOpt(index) {
@@ -375,8 +390,10 @@
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
+      // 跳转页
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        let api_url = this.tableUrl+'?page='+val
+        this.getvisitor(api_url)
       },
 
       //子类导航切换
@@ -451,15 +468,26 @@
       getParam(url,params){
         this.$axios.post(url,params).then(res=>{
           if(res.data.code=='0'){
+            this.default1='1'
             this.sideModelParams = res.data.data;
-            let api_url = res.data.data.navList[0].api_url;
-            this.getvisitor(api_url)
+            this.$forceUpdate()
+            console.log(this.sideModelParams)
+
+            if(JSON.stringify(this.sideModelParams)==='{}'){
+              return;
+            }else{
+              if(this.sideModelParams.navList.length>0){
+                let api_url = res.data.data.navList[0].api_url;
+                this.tableUrl = res.data.data.navList[0].api_url
+                this.getvisitor(api_url)
+              }
+            }
+
           }else{
             this.sideModelParams = null
           }
         }).catch(err=>{
-          this.$message.error(err.data.msg)
-          console.log(err,'获取模块内字段参数')
+          console.log(err)
         })
       },
 
@@ -472,17 +500,18 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.1)'
         });
-        that.$axios.post(url).then(res => {
+
+        that.$axios.get(url).then(res => {
           loading.close();
-          console.log(res.data, 'aaa')
-          if (res.data.code == 0) {
-            for (let i in res.data.data) {
-              res.data.data[i].id = Number(i) + 1;
+          console.log(res.data.results)
+          if (res.data.results.code == 0) {
+            for (let i in res.data.results.data) {
+              res.data.results.data[i].id = Number(i) + 1;
             }
-            that.tableData = res.data.data;
+            that.tableData = res.data.results.data;
             let arr = [];//存储表格头数据
             let arr2 = [];//存储tags筛选数据
-            for (let i in res.data.data[0]) {
+            for (let i in res.data.results.data[0]) {
               let obj = {};
               let tag = {}
               if (i == 'id') {
@@ -512,20 +541,25 @@
             }
 
             // 再次进行改造
-            for (let i in res.data.thead) {
+            for (let i in res.data.results.thead) {
               if (i != 0 ) {
-                arr[i].label = res.data.thead[i];
-                arr2[i].label = res.data.thead[i]
+                arr[i].label = res.data.results.thead[i];
+                arr2[i].label = res.data.results.thead[i]
               }
             }
+            that.count = res.data.count;
+            that.nextPage=res.data.next;
+            that.prevPage=res.data.previous;
             that.tableArr = arr;
             that.arr = arr;
             that.tags = arr2;
             console.log(that.tags)
+            this.$forceUpdate();
             // that.sorts = 'uv'//可调节排序的字段
           } else {
             this.$message(res.data.msg);
             that.tableData = that.tableData
+            this.$forceUpdate();
           }
         }).catch(res => {
           loading.close();
@@ -534,21 +568,28 @@
 
       // 获取侧边栏数据
       getSideBar(){
-        this.$axios.post("/api/v1/leftcol/").then(res=>{
+        this.tableData = [];
+        this.tableArr = [];
+        this.arr = [];
+        this.tags = [];
+        this.sideModelParams={};
+        this.$forceUpdate();
+        this.$axios.get("/api/v1/leftcol/").then(res=>{
           if(res.data.code==0){
             if(res.data.data){
               this.sideData = res.data.data;
+              if(this.sideData.length<=0) return
               // 编辑面包屑
-              let sideItem =  this.sideData[0].name,
-                sideSubItem = this.sideData[0].fields[0].name,
-                sideLastItem = this.sideData[0].fields[0].fields[0].name,
+              let sideItem =  this.sideData[0].name||'',
+                sideSubItem = this.sideData[0].fields[0].name||'',
+                sideLastItem = this.sideData[0].fields[0].fields[0].name||'',
                 curpath = new Array(sideItem,sideSubItem,sideLastItem);
               this.curpath = curpath
 
-              this.sideOpt = this.sideData[0].fields[0].fields[0].id;
-              this.sideModelName=this.sideData[0].fields[0].fields[0].name;
+              this.sideOpt = this.sideData[0].fields[0].fields[0].id||'';
+              this.sideModelName=this.sideData[0].fields[0].fields[0].name||'';
 
-              let url = this.sideData[0].fields[0].fields[0].url;
+              let url = this.sideData[0].fields[0].fields[0].url||'';
               let param = {
                 id : this.sideOpt
               }

@@ -20,7 +20,7 @@
           <div class="text-center padding-lr-xs margin-bottom" style="width: calc(100%/6);box-sizing: border-box" v-for="(subitem,idx) in items.fields" :key="idx">
             <div class="large text-blod sub-menu-title margin-bottom-sm">{{subitem.name}}</div>
             <div class=" base sub-menu-list">
-              <div class="margin-bottom-sm sub-menu-item text-center" :class="curItem==index&&curOpt==lowItem.id?'text-cyan':''"
+              <div class="margin-bottom-sm sub-menu-item text-center pointer" :class="curItem==index&&curOpt==lowItem.id?'text-cyan':''"
                    v-for="(lowItem,subidx) in subitem.fields"
                    :key="subidx" @click="getSubData(lowItem.name,lowItem.id,subitem.name,index,lowItem.url)">
                 {{lowItem.name}}
@@ -62,6 +62,7 @@
     },
     methods: {
       getSubData(name,id, parentname, index,url) {
+
         let data = {
           name,
           id,
@@ -69,6 +70,7 @@
           index,
           url
         }
+        console.log(data,'dta')
         this.$emit('getcur', data,)
         this.curItem = index;
         this.curOpt = id;
