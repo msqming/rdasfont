@@ -312,14 +312,14 @@
         let param = {
           id : e.id
         }
-        console.log(sideItem,sideSubItem,sideLastItem)
         this.tableUrl = '';
         this.currentPage = 1;
-        this.count = '';
+        this.count = 0;
         this.nextPage='';
         this.prevPage='';
         this.sideModelName = sideLastItem;
         this.uploadUrl=e.url;//上传路径
+        console.log(e.url,'========e.url')
         this.curpath = curpath;
         this.tableData = [];
         this.tableArr = [];
