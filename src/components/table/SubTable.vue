@@ -17,7 +17,7 @@
     <!--    arr为自定义表头数据-->
     <template v-for="(item,index) in arr">
 
-      <el-table-column :prop="item.prop" :label="item.label" :key="index" :width="index==0?60:''"
+      <el-table-column :prop="item.prop" :label="item.label" :key="index" :min-width="index==0?60:150"
                        v-if="item.type==='normal'" resizable
                        show-overflow-tooltip>
 
