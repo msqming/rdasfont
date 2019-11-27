@@ -109,11 +109,15 @@
             <el-card class="margin-top-sm">
               <div v-if="sideModelParams.navList!=undefined">
                 <div class="flex align-center">
-                  <div class="padding-lr-xs flex align-center justify-center text-center pointer "
+                  <div class="padding-lr-xs flex align-center justify-center text-center flex-direction pointer "
                        :class="index+1==default1?'border-bottom-cyan':''"
-                       v-for="(item,index) in sideModelParams.navList" :key="index" style="width: 100px;min-height: 60px;"
-                       @click="selectSub(index)"
-                  ><span :class="index+1==default1?'text-cyan medium text-blod':''">{{item.name}}</span></div>
+                       v-for="(item,index) in sideModelParams.navList" :key="index"
+                       style="width: 100px;min-height: 60px;"
+                       @click="selectSub(index)">
+                    <div :class="index+1==default1?'text-cyan medium text-blod':''">{{item.subnameOne}}</div>
+                    <div style="margin-top:5px" :class="index+1==default1?'text-cyan medium text-blod':''">{{item.subnameTwo}}</div>
+
+                  </div>
                 </div>
               </div>
             </el-card>
@@ -467,7 +471,13 @@
       getParam(url, params) {
         this.$axios.post(url, params).then(res => {
           if (res.data.code == '0') {
-            this.default1 = '1'
+            this.default1 = '1';
+            if (res.data.data.navList.length > 0) {
+              res.data.data.navList.forEach(item => {
+                item.subnameOne = item.name.split(' ')[0];
+                item.subnameTwo = item.name.split(' ')[1]
+              })
+            }
             this.sideModelParams = res.data.data;
             this.$forceUpdate()
             console.log(this.sideModelParams)
