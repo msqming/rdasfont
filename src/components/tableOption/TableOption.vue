@@ -2,7 +2,9 @@
   <!--              选项筛选-->
   <div class="idx-options margin-bottom-sm margin-top">
     <div class=" margin-top-sm margin-bottom-sm padding-lr-xs "
-         :class="showmore?'flex flex-wrap':'idx-tag'">
+         :class="showmore?'flex flex-wrap':'idx-tag'"
+         style="position: relative"
+    >
       <el-tag
           class=" margin-bottom-sm pointer tag-Opt"
           v-for="(item,index) in tags"
@@ -13,7 +15,14 @@
         {{ item.label }} <i class="el-icon-check el-icon--right" v-if="item.ischoosed"></i>
       </el-tag>
 
-      <div class="checkmore" @click="checkmore()" v-if="tags.length>8&!showmore">查看更多</div>
+      <div
+          class="checkmore margin-bottom-sm pointer text-center margin-right-xs"
+          v-if="tags.length>8&showmore"
+          @click="closeMore"
+      >
+        收起 <i class="el-icon-arrow-up"></i>
+      </div>
+      <div class="checkmore pointer" @click="checkmore()" v-if="tags.length>8&!showmore">查看更多</div>
     </div>
     <div class="flex align-center">
       <el-button-group>
@@ -37,6 +46,10 @@
       // 点击查看更多
       checkmore() {
         this.showmore = true
+      },
+      closeMore(){
+        this.showmore = false
+
       },
 
       // 点击选择标签
@@ -100,13 +113,14 @@
     display: inline-block;
   }
 
-  .idx-tag .checkmore {
+   .checkmore {
     position: absolute;
     right: 0;
-    top: 0px;
+    bottom: 0px;
     color: #1cbbb4;
     background-color: #ecf5ff;
     padding: 0 10px;
     line-height: 30px;
+    margin-bottom: 20px;
   }
 </style>

@@ -76,19 +76,19 @@
 
             <template>
               <!--         360 子类筛选选项-->
-<!--              -->
+              <!--              -->
               <el-card class="margin-top-sm" v-if="sideModelParams.hardwareList">
                 <div class="idx-subnav flex align-start">
                   <div class="flex-sub flex idx-subnav-list">
                 <span v-for="(item,index) in opts" :key="index" class="margin-right-xl pointer"
                       :class="curIdx==index?'text-cyan':''" :data-index="index" @click="choosednav">{{item}}</span>
                   </div>
-<!--                  <div class="text-blue">设置</div>-->
+                  <!--                  <div class="text-blue">设置</div>-->
                 </div>
               </el-card>
 
               <!--         360 子类选项-->
-<!--              -->
+              <!--              -->
               <el-card class="margin-top-sm" v-if="sideModelParams.productList">
                 <div class="flex flex-wrap idx-opt-list">
                   <div class="padding-xs margin-bottom-sm border idx-opt-item pointer"
@@ -106,28 +106,30 @@
             </template>
 
             <!--          选择切换-->
-<!--            -->
-            <div class=" margin-top-sm" v-if="sideModelParams.navList!=undefined&&sideModelParams.navList.length>1">
-              <el-menu
-                  :default-active="default1"
-                  class="el-menu-demo"
-                  mode="horizontal"
-                  @select="selectSub"
-                  text-color="#333"
-                  active-text-color="#ffd04b">
-                <el-menu-item :index="(index+1).toString()" v-for="(item,index) in sideModelParams.navList" :key="index">{{item.name}}
-                </el-menu-item>
-              </el-menu>
-            </div>
+            <el-card class="margin-top-sm">
+              <div v-if="sideModelParams.navList!=undefined">
+                <div class="flex align-center">
+                  <div class="padding-lr-xs flex align-center justify-center text-center pointer "
+                       :class="index+1==default1?'border-bottom-cyan':''"
+                       v-for="(item,index) in sideModelParams.navList" :key="index" style="width: 100px;min-height: 60px;"
+                       @click="selectSub(index)"
+                  ><span :class="index+1==default1?'text-cyan medium text-blod':''">{{item.name}}</span></div>
+                </div>
+              </div>
+            </el-card>
+
 
             <!--          主要内容-->
             <el-card class="margin-top-sm">
               <div class="idx-main">
                 <div class="large text-blod marign-bottom-sm flex align-end justify-between margin-top-sm">
                   <div>
-                    <div class="extra-large" v-if="sideModelParams.navList!==undefined&&sideModelParams.navList.length>0">{{sideModelParams.navList[navIndex].name}}</div>
-<!--                    个别模块含有-->
-<!--                    -->
+                    <div class="extra-large"
+                         v-if="sideModelParams.navList!==undefined&&sideModelParams.navList.length>0">
+                      {{sideModelParams.navList[navIndex].name}}
+                    </div>
+                    <!--                    个别模块含有-->
+                    <!--                    -->
                     <div class="flex-sub flex margin-top" v-if="sideModelParams.categoryList">
                       <el-radio-group v-model="radio2" @change="changeRadio">
                         <el-radio v-for="(item,index) in 3" :key="index" :label="index">选项</el-radio>
@@ -220,7 +222,7 @@
     data() {
 
       return {
-        sideOpt:1,//侧边栏默认选中
+        sideOpt: 1,//侧边栏默认选中
         curpath: [],//面包屑数据
         sideData: [],//侧边栏数据
         uploadNum: 0,//已上传文件个数
@@ -231,7 +233,7 @@
         default1: '1',
         dialogTableVisible: false,//控制日志弹窗
         manageModel: false,//控制管理弹窗
-        navIndex:0,
+        navIndex: 0,
         curOpt: 0,//360子选择
         value1: '',//日期值
         value2: '',//日期值
@@ -239,8 +241,8 @@
         arr: [],//存储用于控制展示表格表头的数组
         tableArr: [],//实际用于控制展示表格表头的数组
         currentPage: 1,//表格当前页码
-        count:0,//表格数据总数
-        tableUrl:'',//表格请求连接
+        count: 0,//表格数据总数
+        tableUrl: '',//表格请求连接
 
         isShowLoadBox: false,//打开上传弹窗
         opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
@@ -248,12 +250,12 @@
         isShowAll: false,//是否查看更多
         radio2: 2,
         // sorts: '',//决定表格排序的字段
-        uploadUrl:'/storage/flow/',
-        sideModelName:'',//侧边栏模块名
-        sideModelParams:{},//侧边栏模块内部参数
+        uploadUrl: '/storage/flow/',
+        sideModelName: '',//侧边栏模块名
+        sideModelParams: {},//侧边栏模块内部参数
 
-        nextPage:'',//下一页url
-        prevPage:'',//上一页url
+        nextPage: '',//下一页url
+        prevPage: '',//上一页url
         pickerOptions: {// 日期
           shortcuts: [{
             text: '最近一天',
@@ -295,38 +297,38 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
-        let sideItem =  this.sideData[e.index].name||'',
-          sideSubItem = e.parentname||'',
-          sideLastItem = e.name||'',
-          curpath = new Array(sideItem,sideSubItem,sideLastItem)||'';
+        let sideItem = this.sideData[e.index].name || '',
+          sideSubItem = e.parentname || '',
+          sideLastItem = e.name || '',
+          curpath = new Array(sideItem, sideSubItem, sideLastItem) || '';
         let Url;
         console.log(e.subUrl)
-        if(e.subUrl){
-          if(e.url.indexOf('/api/v1')!=-1){
-            Url = '/api/v1'+e.subUrl;
-          }else{
+        if (e.subUrl) {
+          if (e.url.indexOf('/api/v1') != -1) {
+            Url = '/api/v1' + e.subUrl;
+          } else {
             Url = e.subUrl;
           }
         }
         let param = {
-          id : e.id
+          id: e.id
         }
         this.tableUrl = '';
         this.currentPage = 1;
         this.count = 0;
-        this.nextPage='';
-        this.prevPage='';
+        this.nextPage = '';
+        this.prevPage = '';
         this.sideModelName = sideLastItem;
-        this.uploadUrl=e.url;//上传路径
+        this.uploadUrl = e.url;//上传路径
         this.curpath = curpath;
         this.tableData = [];
         this.tableArr = [];
         this.arr = [];
         this.tags = [];
-        this.sideModelParams={};
+        this.sideModelParams = {};
         this.$forceUpdate();
 
-        this.getParam(Url,param)
+        this.getParam(Url, param)
       },
 
       //改变显示上传弹窗的值
@@ -340,9 +342,9 @@
       },
 
       // 子导航选择
-      selectSub(key, keyPath) {
-
-        this.navIndex = Number(key)-1;
+      selectSub(key) {
+        this.default1 = Number(key) + 1
+        this.navIndex = Number(key);
         this.tableData = [];
         this.tableArr = [];
         this.arr = [];
@@ -353,7 +355,7 @@
         this.$forceUpdate();
 
         let api_url = this.sideModelParams.navList[this.navIndex].api_url;
-        this.tableUrl =api_url
+        this.tableUrl = api_url
         this.getvisitor(api_url);
       },
 
@@ -389,7 +391,7 @@
       },
       // 跳转页
       handleCurrentChange(val) {
-        let api_url = this.tableUrl+'?page='+val
+        let api_url = this.tableUrl + '?page=' + val
         this.getvisitor(api_url)
       },
 
@@ -438,7 +440,7 @@
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
         let day = new Date();
         day = parseTime(day)
-        let dateName = `模块名第${1}页 ${day}`
+        let dateName = `${this.sideModelName}第${this.currentPage}页 ${day}`
         let newArr = []
         let newArr2 = []
         for (let i in arr) {
@@ -462,33 +464,33 @@
       },
 
       // 获取模块内字段参数
-      getParam(url,params){
-        this.$axios.post(url,params).then(res=>{
-          if(res.data.code=='0'){
-            this.default1='1'
+      getParam(url, params) {
+        this.$axios.post(url, params).then(res => {
+          if (res.data.code == '0') {
+            this.default1 = '1'
             this.sideModelParams = res.data.data;
             this.$forceUpdate()
             console.log(this.sideModelParams)
 
-            if(JSON.stringify(this.sideModelParams)==='{}'){
+            if (JSON.stringify(this.sideModelParams) === '{}') {
               return;
-            }else{
-              if(this.sideModelParams.navList.length>0){
+            } else {
+              if (this.sideModelParams.navList.length > 0) {
                 let api_url = res.data.data.navList[0].api_url;
                 this.tableUrl = res.data.data.navList[0].api_url
                 this.getvisitor(api_url)
               }
             }
 
-          }else{
+          } else {
             this.sideModelParams = null
           }
-        }).catch(err=>{
+        }).catch(err => {
           console.log(err)
         })
       },
 
-      // 获取访客分析数据
+      // 获取模块表格数据
       getvisitor(url) {
         const that = this;
         const loading = this.$loading({
@@ -539,14 +541,14 @@
 
             // 再次进行改造
             for (let i in res.data.results.thead) {
-              if (i != 0 ) {
+              if (i != 0) {
                 arr[i].label = res.data.results.thead[i];
                 arr2[i].label = res.data.results.thead[i]
               }
             }
             that.count = res.data.count;
-            that.nextPage=res.data.next;
-            that.prevPage=res.data.previous;
+            that.nextPage = res.data.next;
+            that.prevPage = res.data.previous;
             that.tableArr = arr;
             that.arr = arr;
             that.tags = arr2;
@@ -564,43 +566,43 @@
       },
 
       // 获取侧边栏数据
-      getSideBar(){
+      getSideBar() {
         this.tableData = [];
         this.tableArr = [];
         this.arr = [];
         this.tags = [];
-        this.sideModelParams={};
+        this.sideModelParams = {};
         this.$forceUpdate();
-        this.$axios.get("/api/v1/leftcol/").then(res=>{
-          if(res.data.code==0){
-            if(res.data.data){
+        this.$axios.get("/api/v1/leftcol/").then(res => {
+          if (res.data.code == 0) {
+            if (res.data.data) {
               this.sideData = res.data.data;
-              if(this.sideData.length<=0) return
+              if (this.sideData.length <= 0) return
               // 编辑面包屑
-              let sideItem =  this.sideData[0].name||'',
-                sideSubItem = this.sideData[0].fields[0].name||'',
-                sideLastItem = this.sideData[0].fields[0].fields[0].name||'',
-                curpath = new Array(sideItem,sideSubItem,sideLastItem);
+              let sideItem = this.sideData[0].name || '',
+                sideSubItem = this.sideData[0].fields[0].name || '',
+                sideLastItem = this.sideData[0].fields[0].fields[0].name || '',
+                curpath = new Array(sideItem, sideSubItem, sideLastItem);
               this.curpath = curpath
 
-              this.sideOpt = this.sideData[0].fields[0].fields[0].id||'';
-              this.sideModelName=this.sideData[0].fields[0].fields[0].name||'';
+              this.sideOpt = this.sideData[0].fields[0].fields[0].id || '';
+              this.sideModelName = this.sideData[0].fields[0].fields[0].name || '';
 
-              let url = this.sideData[0].fields[0].fields[0].url||'';
+              let url = this.sideData[0].fields[0].fields[0].url || '';
               let param = {
-                id : this.sideOpt
+                id: this.sideOpt
               }
-              this.getParam(url,param)
+              this.getParam(url, param)
             }
 
-          }else{
+          } else {
             this.$message.error('获取侧边栏数据失败')
             this.sideData = []
           }
-        }).catch(err=>{
+        }).catch(err => {
           this.$message.error('获取侧边栏数据失败')
           this.sideData = []
-          console.log(err,'侧边栏err')
+          console.log(err, '侧边栏err')
         })
       },
 
@@ -609,14 +611,14 @@
 
     created() {
       console.log(this.$local.get('userInfo'))
-      if(!this.$local.get('userInfo')){
+      if (!this.$local.get('userInfo')) {
         this.$message('登录已过期或者未登录，请重新登录');
-        setTimeout(()=>{
+        setTimeout(() => {
           let data = {
-            url:'/home'
+            url: '/home'
           }
-          this.$router.push({path:'/Login',query:data})
-        },500)
+          this.$router.push({path: '/Login', query: data})
+        }, 500)
       }
 
       // 获取侧边栏数据
