@@ -197,7 +197,7 @@
     </el-dialog>
 
     <!--    上传弹窗组件-->
-    <Upload :showLoadBox="isShowLoadBox" :uploadUrl="uploadUrl" @changeShowLoadBox="changeVal"></Upload>
+    <Upload :showLoadBox="isShowLoadBox" :uploadUrl="uploadUrl" :TwoClass="TwoClass" :ThreeClass="ThreeClass"  @changeShowLoadBox="changeVal"></Upload>
     <!--    管理弹窗-->
     <Manage :manageModel="manageModel" @changeManageModel="changeManageModel"></Manage>
   </div>
@@ -254,7 +254,9 @@
         isShowAll: false,//是否查看更多
         radio2: 2,
         // sorts: '',//决定表格排序的字段
-        uploadUrl: '/storage/flow/',
+        uploadUrl: '/storage/upload/',
+        TwoClass:'',//侧边栏选中的父类名字，如流量
+        ThreeClass:'',//侧边栏选中的子类名字，如访客分析
         sideModelName: '',//侧边栏模块名
         sideModelParams: {},//侧边栏模块内部参数
 
@@ -301,6 +303,7 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
+        console.log(e)
         let sideItem = this.sideData[e.index].name || '',
           sideSubItem = e.parentname || '',
           sideLastItem = e.name || '',
@@ -323,7 +326,9 @@
         this.nextPage = '';
         this.prevPage = '';
         this.sideModelName = sideLastItem;
-        this.uploadUrl = e.url;//上传路径
+        // this.uploadUrl = e.url;//上传路径
+        this.TwoClass=sideSubItem;
+        this.ThreeClass = sideLastItem;
         this.curpath = curpath;
         this.tableData = [];
         this.tableArr = [];
@@ -594,6 +599,9 @@
                 sideLastItem = this.sideData[0].fields[0].fields[0].name || '',
                 curpath = new Array(sideItem, sideSubItem, sideLastItem);
               this.curpath = curpath
+
+              this.TwoClass = sideSubItem
+              this.ThreeClass = sideLastItem
 
               this.sideOpt = this.sideData[0].fields[0].fields[0].id || '';
               this.sideModelName = this.sideData[0].fields[0].fields[0].name || '';

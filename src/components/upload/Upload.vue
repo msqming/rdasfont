@@ -80,7 +80,16 @@
       uploadUrl:{
         type: String,
         default: ''
-      }
+      },
+      TwoClass:{
+        type: String,
+        default: ''
+      },
+      ThreeClass:{
+        type: String,
+        default: ''
+      },
+
     },
     data() {
       console.log(this.showLoadBox)
@@ -158,6 +167,8 @@
         params.append('platform', '天猫');//添加form表单中其他数据
         params.append('shop', '惠普儒韵官旗店');//添加form表单中其他数据
         params.append('user', 'admin');//添加form表单中其他数据
+        params.append('twoClass',this.TwoClass)
+        params.append('threeClass',this.ThreeClass)
         let config = {
           headers: {'Content-Type': 'multipart/form-data'},
           onUploadProgress: progressEvent => {
