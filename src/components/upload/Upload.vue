@@ -207,7 +207,8 @@
               }
               setTimeout(()=>{
                 if(this.uploadError.length>0){
-                  this.dialogTableVisible = true
+                  this.dialogTableVisible = true;
+
                 }
               },400)
             }
@@ -227,8 +228,15 @@
       },
       // 点击上传
       submitclick() {
-        console.log(this.fileList)
+        console.log(this.fileList,this.uploadNum)
         if (this.fileList.length <= 0) {
+          this.$message({
+            showClose: true,
+            message: '请先选择需要上传的文件',
+            type: 'warning'
+          });
+          return
+        }else if(this.uploadNum == this.fileList.length){
           this.$message({
             showClose: true,
             message: '请先选择需要上传的文件',

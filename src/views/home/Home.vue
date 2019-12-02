@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bodyBox">
     <el-container style="height: 100%; border: 1px solid #eee;overflow-y: auto">
 
       <el-header class=" bg-black" height="141px" style="padding-right: 0;">
@@ -149,6 +149,7 @@
                         range-separator="~"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        :default-time="['00:00:00', '23:59:59']"
                         :picker-options="pickerOptions">
                     </el-date-picker>
 
@@ -206,6 +207,7 @@
 <script>
   import {parseTime} from "common/utils/setMethods.js";
   import {json2excel} from "common/utils/setMethods.js";
+  import util from "common/utils/util.js";
   import subTable from 'components/table/SubTable';
   import Sidebar from 'components/sidebar/Sidebar';
   import DBheader from 'components/header/DBheader';
@@ -288,12 +290,17 @@
               picker.$emit('pick', [start, end]);
             }
           }],
-          onPick: (dateRange => {//获取选择的时间回调
-            if (!dateRange.maxDate) {
+          onPick: (datetimerange => {//获取选择的时间回调
+            if (!datetimerange.maxDate) {
               return;
             }
-            console.log(parseTime(dateRange.minDate))
-            this.value2 = [dateRange.minDate, dateRange.maxDate];
+            this.value2 = [datetimerange.minDate, datetimerange.maxDate];
+            let data = {
+              startTime:parseTime(datetimerange.minDate).substr(0,10),
+              endTime:parseTime(datetimerange.maxDate).substr(0,10)
+            }
+            console.log(data)
+            this.getvisitor(this.tableUrl,data)
             // this.searchChangeDate(); //接上筛选接口
           })
         },
@@ -361,6 +368,7 @@
         this.count = 0;
         this.tableUrl = '';
         this.currentPage = 1;
+        this.value2=[];
         this.$forceUpdate();
 
         let api_url = this.sideModelParams.navList[this.navIndex].api_url;
@@ -368,10 +376,7 @@
         this.getvisitor(api_url);
       },
 
-      // 选择最近几天日期
-      handleCommand(command) {
-        this.$message('click on item ' + command);
-      },
+
       // 选择店铺来源
       selectStore(command) {
         this.storeIndex = command
@@ -439,17 +444,19 @@
       },
 
       //点击下载事件
-      handleDownload() {
-        console.log(this.tableData)
-        if (this.tableData.length <= 0) {
-          this.$message('表格无数据');
+      handleDownload:util.debounce(function(){
+        var that = this;
+        console.log(that.tableData)
+
+        if (that.tableData.length <= 0) {
+          that.$message('表格无数据');
           return
         }
-        let arr = this.arr;
+        let arr = that.arr;
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
         let day = new Date();
         day = parseTime(day)
-        let dateName = `${this.sideModelName}第${this.currentPage}页 ${day}`
+        let dateName = `${that.sideModelName}第${that.currentPage}页 ${day}`
         let newArr = []
         let newArr2 = []
         for (let i in arr) {
@@ -463,14 +470,14 @@
           {
             tHeader: newArr, // sheet表一头部
             filterVal: newArr2, // 表一的数据字段
-            tableDatas: this.tableData, // 表一的整体json数据
+            tableDatas: that.tableData, // 表一的整体json数据
             sheetName: dateName// 表一的sheet名字
           }
 
         ]
         //   引入的函数
         json2excel(excelDatas, dateName, true, "xlsx")
-      },
+      }),
 
       // 获取模块内字段参数
       getParam(url, params) {
@@ -485,7 +492,7 @@
             }
             this.sideModelParams = res.data.data;
             this.$forceUpdate()
-            console.log(this.sideModelParams)
+            console.log(this.sideModelParams,'-----')
 
             if (JSON.stringify(this.sideModelParams) === '{}') {
               return;
@@ -506,7 +513,7 @@
       },
 
       // 获取模块表格数据
-      getvisitor(url) {
+      getvisitor(url,data) {
         const that = this;
         const loading = this.$loading({
           lock: true,
@@ -514,10 +521,10 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.1)'
         });
-
-        that.$axios.get(url).then(res => {
+        let req = data?that.$axios.post(url,data):that.$axios.get(url)
+        req.then(res => {
           loading.close();
-          console.log(res.data.results)
+          console.log(res.data.results,'eeeeeee')
           if (res.data.results.code == 0) {
             for (let i in res.data.results.data) {
               res.data.results.data[i].id = Number(i) + 1;
@@ -567,7 +574,7 @@
             that.tableArr = arr;
             that.arr = arr;
             that.tags = arr2;
-            console.log(that.tags)
+            console.log(that.tags,'that.tags')
             this.$forceUpdate();
             // that.sorts = 'uv'//可调节排序的字段
           } else {

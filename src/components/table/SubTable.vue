@@ -1,7 +1,7 @@
 <!--数据表格组件-->
 <template>
   <!--              表格-->
-  <el-table class="margin-top-sm" :data="tableData" style="width: 100%" max-height="400"
+  <el-table class="margin-top-sm dbtable" :data="tableData" style="width: 100%" max-height="400"
             ref="multipleTable"
             tooltip-effect="dark"
             :stripe="true"
@@ -71,5 +71,26 @@
 </script>
 
 <style scoped>
+  /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+  ::-webkit-scrollbar
+  {
+    width: 8px;  /*滚动条宽度*/
+    height: 8px;  /*滚动条高度*/
+  }
 
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+    border-radius: 6px;  /*滚动条的背景区域的圆角*/
+    background-color: rgba(0,0,0,.1);/*滚动条的背景颜色*/
+  }
+
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb
+  {
+    border-radius: 6px;  /*滚动条的圆角*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,.3);
+    background-color: white!important;  /*滚动条的背景颜色*/
+  }
 </style>
