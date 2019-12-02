@@ -130,7 +130,7 @@
                   <div>
                     <div class="extra-large"
                          v-if="sideModelParams.navList!==undefined&&sideModelParams.navList.length>0">
-                      {{sideModelParams.navList[navIndex].name}}
+                      {{sideModelParams.navList!==undefined&&sideModelParams.navList.length>0?sideModelParams.navList[navIndex].name:'模块名'}}
                     </div>
                     <!--                    个别模块含有-->
                     <!--                    -->
@@ -249,6 +249,7 @@
         currentPage: 1,//表格当前页码
         count: 0,//表格数据总数
         tableUrl: '',//表格请求连接
+        allData:[],//表格中的所有数据，用于下载
 
         isShowLoadBox: false,//打开上传弹窗
         opts: ['笔记本电脑', '键盘', '无线鼠标', '有线鼠标', '台式整机', '家用一体机', '显示器', '普通U盘', '其他'],//子类筛选
@@ -268,6 +269,7 @@
           shortcuts: [{
             text: '最近一天',
             onClick(picker) {
+
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
@@ -279,6 +281,7 @@
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+
               picker.$emit('pick', [start, end]);
             }
           }, {
@@ -286,7 +289,9 @@
             onClick(picker) {
               const end = new Date();
               const start = new Date();
+              console.log(end,start)
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+
               picker.$emit('pick', [start, end]);
             }
           }],
@@ -310,13 +315,11 @@
 
       // 监听获取当前侧边栏点击的参数
       getcurId(e) {
-        console.log(e)
         let sideItem = this.sideData[e.index].name || '',
           sideSubItem = e.parentname || '',
           sideLastItem = e.name || '',
           curpath = new Array(sideItem, sideSubItem, sideLastItem) || '';
         let Url;
-        console.log(e.subUrl)
         if (e.subUrl) {
           if (e.url.indexOf('/api/v1') != -1) {
             Url = '/api/v1' + e.subUrl;
@@ -341,6 +344,8 @@
         this.tableArr = [];
         this.arr = [];
         this.tags = [];
+        this.allData=[];
+        this.value2=[];
         this.sideModelParams = {};
         this.$forceUpdate();
 
@@ -360,7 +365,7 @@
       // 子导航选择
       selectSub(key) {
         this.default1 = Number(key) + 1
-        this.navIndex = Number(key);
+        this.navIndex = Number(key)||0;
         this.tableData = [];
         this.tableArr = [];
         this.arr = [];
@@ -368,6 +373,7 @@
         this.count = 0;
         this.tableUrl = '';
         this.currentPage = 1;
+        this.allData=[];
         this.value2=[];
         this.$forceUpdate();
 
@@ -419,7 +425,6 @@
       // 打开上传弹窗
       openUpLoad() {
         this.isShowLoadBox = true;
-        console.log(this.isShowLoadBox)
       },
 
 
@@ -446,7 +451,10 @@
       //点击下载事件
       handleDownload:util.debounce(function(){
         var that = this;
-        console.log(that.tableData)
+        if(this.value2==''||this.value2==[]){
+          that.$message('请选择需要下载时间范围');
+          return
+        }
 
         if (that.tableData.length <= 0) {
           that.$message('表格无数据');
@@ -470,7 +478,7 @@
           {
             tHeader: newArr, // sheet表一头部
             filterVal: newArr2, // 表一的数据字段
-            tableDatas: that.tableData, // 表一的整体json数据
+            tableDatas: that.allData, // 表一的整体json数据
             sheetName: dateName// 表一的sheet名字
           }
 
@@ -492,7 +500,6 @@
             }
             this.sideModelParams = res.data.data;
             this.$forceUpdate()
-            console.log(this.sideModelParams,'-----')
 
             if (JSON.stringify(this.sideModelParams) === '{}') {
               return;
@@ -524,8 +531,13 @@
         let req = data?that.$axios.post(url,data):that.$axios.get(url)
         req.then(res => {
           loading.close();
-          console.log(res.data.results,'eeeeeee')
           if (res.data.results.code == 0) {
+            if(data){
+              for (let i in res.data.results.all_data) {
+                res.data.results.all_data[i].id = Number(i) + 1;
+              }
+              that.allData = res.data.results.all_data;
+            }
             for (let i in res.data.results.data) {
               res.data.results.data[i].id = Number(i) + 1;
             }
@@ -574,12 +586,12 @@
             that.tableArr = arr;
             that.arr = arr;
             that.tags = arr2;
-            console.log(that.tags,'that.tags')
             this.$forceUpdate();
             // that.sorts = 'uv'//可调节排序的字段
           } else {
             this.$message(res.data.msg);
-            that.tableData = that.tableData
+            that.tableData = that.tableData;
+            that.allData = []
             this.$forceUpdate();
           }
         }).catch(res => {
@@ -634,8 +646,22 @@
 
     },
 
+    watch: {
+      value2(newVal) {
+        console.log(newVal)
+        if(newVal==[]){
+          return
+        }
+        let data = {
+          startTime:parseTime(newVal[0]).substr(0,10),
+          endTime:parseTime(newVal[1]).substr(0,10)
+        }
+        this.getvisitor(this.tableUrl,data)
+        return newVal
+      }
+    },
+
     created() {
-      console.log(this.$local.get('userInfo'))
       if (!this.$local.get('userInfo')) {
         this.$message('登录已过期或者未登录，请重新登录');
         setTimeout(() => {
@@ -655,7 +681,6 @@
       let that = this;
       //原生获取屏幕高度
       let orderHight = document.body.clientHeight
-      console.log(orderHight)
       that.orderHight = orderHight - 350
       // document.getElementById('order-list').style.height = orderHight + 'px'
     },

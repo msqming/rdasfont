@@ -92,14 +92,14 @@
 
     },
     data() {
-      console.log(this.showLoadBox)
       return {
         fileList: [],
         uploadNum: 0,
         isShowLoadBox: this.showLoadBox,
         uploadShow: false,
         uploadError:[],
-        dialogTableVisible:false
+        dialogTableVisible:false,
+        uploadsuccess:[]
       }
     },
     methods: {
@@ -109,6 +109,7 @@
         this.$refs.upload.abort()//停止上传
         this.isShowLoadBox = false;
         this.fileList = [];
+        this.uploadsuccess = [];
         this.uploadNum = 0;
         this.$emit('changeShowLoadBox', this.isShowLoadBox)//传递给父组件
       },
@@ -138,7 +139,6 @@
 
       // 上传文件状态监听
       filechange(files, fileList) {
-        console.log(fileList)
         this.fileList = fileList
       },
 
@@ -152,7 +152,6 @@
       // 文件超出限制
       handleExceed(file, fileList) {
         this.$message('文件超出限制')
-        console.log(file, fileList);
       },
 
 
@@ -172,7 +171,6 @@
         let config = {
           headers: {'Content-Type': 'multipart/form-data'},
           onUploadProgress: progressEvent => {
-            console.log(progressEvent, 'progressEvent')
             let percent = (progressEvent.loaded / progressEvent.total * 100) || 0
             //调用onProgress方法来显示进度条，需要传递个对象 percent为进度值
             data.onProgress({percent: percent})
@@ -180,12 +178,14 @@
         };  //添加请求头
         this.$axios.post(this.uploadUrl, params, config)//上传文件
           .then(response => {
-            console.log(response.data)
             if (response.data.code == 0) {
               data.onSuccess(response.data)
               this.uploadNum++;
               // 判断是否全部上传完
-
+              let obj = {};
+              obj.name = data.file.name;
+              obj.size = response.data.total;
+              this.uploadsuccess.push(obj)
             } else {
               let obj = {}
               obj.filename = data.file.name;
@@ -205,6 +205,7 @@
                   type: 'success'
                 });
               }
+              console.log(this.uploadsuccess,'====上传成功的文件大小')
               setTimeout(()=>{
                 if(this.uploadError.length>0){
                   this.dialogTableVisible = true;
@@ -228,7 +229,6 @@
       },
       // 点击上传
       submitclick() {
-        console.log(this.fileList,this.uploadNum)
         if (this.fileList.length <= 0) {
           this.$message({
             showClose: true,
@@ -249,6 +249,7 @@
       },
       // 上传成功监听
       uploadFileSuccess(file, fileList) {// 这里可以打印file查看数据结构
+        console.log(file)
         if (file.response) {//判断是否上传成功
           this.fileList.push({url: file.response.key, status: 'finished'})//上传成功之后把值添加到imglist中
         }

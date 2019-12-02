@@ -96,7 +96,8 @@
     width: 800px;
     position: fixed;
     left: 310px;
-    top: 191px;
+    top: 141px;
+    padding-top: 50px;
     display: none;
     z-index: 3;
     color: #333 !important;
