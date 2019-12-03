@@ -6,7 +6,7 @@
         <div class="up-dialogBox bg-white padding-sm text-black">
           <!--        关闭按钮-->
           <div class="text-right">
-            <i class="el-icon-close text-blod large " @click="closeDialog()"></i>
+            <i class="el-icon-close text-blod large pointer" @click="closeDialog()"></i>
           </div>
 
           <!--        主体内容-->
@@ -201,10 +201,12 @@
               if(this.fileList.length>0){
                 this.$message({
                   showClose: true,
-                  message: '文件已上传完成',
+                  message: '文件已上传完成啦',
                   type: 'success'
                 });
+                this.$emit('doneUpload');
               }
+
               console.log(this.uploadsuccess,'====上传成功的文件大小')
               setTimeout(()=>{
                 if(this.uploadError.length>0){
@@ -224,6 +226,7 @@
                 message: '文件已上传完成',
                 type: 'success'
               });
+
             }
           })
       },
@@ -239,7 +242,7 @@
         }else if(this.uploadNum == this.fileList.length){
           this.$message({
             showClose: true,
-            message: '请先选择需要上传的文件',
+            message: '请选择新的上传文件',
             type: 'warning'
           });
           return

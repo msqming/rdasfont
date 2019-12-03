@@ -198,7 +198,7 @@
     </el-dialog>
 
     <!--    上传弹窗组件-->
-    <Upload :showLoadBox="isShowLoadBox" :uploadUrl="uploadUrl" :TwoClass="TwoClass" :ThreeClass="ThreeClass"  @changeShowLoadBox="changeVal"></Upload>
+    <Upload :showLoadBox="isShowLoadBox" :uploadUrl="uploadUrl" :TwoClass="TwoClass" :ThreeClass="ThreeClass"  @changeShowLoadBox="changeVal" @doneUpload="doneUpload"></Upload>
     <!--    管理弹窗-->
     <Manage :manageModel="manageModel" @changeManageModel="changeManageModel"></Manage>
   </div>
@@ -304,7 +304,7 @@
               startTime:parseTime(datetimerange.minDate).substr(0,10),
               endTime:parseTime(datetimerange.maxDate).substr(0,10)
             }
-            console.log(data)
+            console.log(data,111)
             this.getvisitor(this.tableUrl,data)
             // this.searchChangeDate(); //接上筛选接口
           })
@@ -350,6 +350,12 @@
         this.$forceUpdate();
 
         this.getParam(Url, param)
+      },
+
+      // 监听上传组件是否上传完成
+      doneUpload(){
+        this.value2=[];
+        this.getvisitor(this.tableUrl)
       },
 
       //改变显示上传弹窗的值
@@ -411,8 +417,17 @@
       },
       // 跳转页
       handleCurrentChange(val) {
-        let api_url = this.tableUrl + '?page=' + val
-        this.getvisitor(api_url)
+        let api_url = this.tableUrl + '?page=' + val;
+        if(this.value2!==''||this.value2.length>0){
+          let data = {
+            startTime:parseTime(this.value2[0]).substr(0,10),
+            endTime:parseTime(this.value2[1]).substr(0,10)
+          }
+          this.getvisitor(api_url,data)
+
+        }else{
+          this.getvisitor(api_url)
+        }
       },
 
       //子类导航切换
