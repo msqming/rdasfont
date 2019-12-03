@@ -345,7 +345,7 @@
         this.arr = [];
         this.tags = [];
         this.allData=[];
-        this.value2=[];
+        this.value2='';
         this.sideModelParams = {};
         this.$forceUpdate();
 
@@ -380,7 +380,7 @@
         this.tableUrl = '';
         this.currentPage = 1;
         this.allData=[];
-        this.value2=[];
+        this.value2='';
         this.$forceUpdate();
 
         let api_url = this.sideModelParams.navList[this.navIndex].api_url;
