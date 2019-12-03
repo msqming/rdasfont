@@ -300,12 +300,12 @@
               return;
             }
             this.value2 = [datetimerange.minDate, datetimerange.maxDate];
-            let data = {
-              startTime:parseTime(datetimerange.minDate).substr(0,10),
-              endTime:parseTime(datetimerange.maxDate).substr(0,10)
-            }
-            console.log(data,111)
-            this.getvisitor(this.tableUrl,data)
+            // let data = {
+            //   startTime:parseTime(datetimerange.minDate).substr(0,10),
+            //   endTime:parseTime(datetimerange.maxDate).substr(0,10)
+            // }
+            // console.log(data,111)
+            // this.getvisitor(this.tableUrl,data)
             // this.searchChangeDate(); //接上筛选接口
           })
         },
@@ -478,8 +478,9 @@
         let arr = that.arr;
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
         let day = new Date();
-        day = parseTime(day)
-        let dateName = `${that.sideModelName}第${that.currentPage}页 ${day}`
+        day = parseTime(day);
+        let subname = that.sideModelParams.navList[that.navIndex].name;
+        let dateName = `${that.sideModelName} ${subname} ${day}`
         let newArr = []
         let newArr2 = []
         for (let i in arr) {
@@ -550,11 +551,13 @@
             if(data){
               for (let i in res.data.results.all_data) {
                 res.data.results.all_data[i].id = Number(i) + 1;
+                res.data.results.all_data[i].date_t =  res.data.results.all_data[i].date_t.replace('T',' ')
               }
               that.allData = res.data.results.all_data;
             }
             for (let i in res.data.results.data) {
               res.data.results.data[i].id = Number(i) + 1;
+              res.data.results.data[i].date_t =  res.data.results.data[i].date_t.replace('T',' ')
             }
             that.tableData = res.data.results.data;
             let arr = [];//存储表格头数据
@@ -666,7 +669,7 @@
         if(newVal.length==0||newVal==''){
           return
         }
-
+        console.log('改变')
         let data = {
           startTime:parseTime(newVal[0]).substr(0,10),
           endTime:parseTime(newVal[1]).substr(0,10)
