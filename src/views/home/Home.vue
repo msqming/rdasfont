@@ -130,7 +130,7 @@
                   <div>
                     <div class="extra-large"
                          v-if="sideModelParams.navList!==undefined&&sideModelParams.navList.length>0">
-                      {{sideModelParams.navList!==undefined&&sideModelParams.navList.length>0?sideModelParams.navList[navIndex].name:'模块名'}}
+                      {{sideModelParams.navList.length&&sideModelParams.navList[navIndex].name}}
                     </div>
                     <!--                    个别模块含有-->
                     <!--                    -->
@@ -300,13 +300,7 @@
               return;
             }
             this.value2 = [datetimerange.minDate, datetimerange.maxDate];
-            // let data = {
-            //   startTime:parseTime(datetimerange.minDate).substr(0,10),
-            //   endTime:parseTime(datetimerange.maxDate).substr(0,10)
-            // }
-            // console.log(data,111)
-            // this.getvisitor(this.tableUrl,data)
-            // this.searchChangeDate(); //接上筛选接口
+
           })
         },
       }
@@ -330,6 +324,7 @@
         let param = {
           id: e.id
         }
+        this.navIndex=0;
         this.tableUrl = '';
         this.currentPage = 1;
         this.count = 0;
@@ -371,7 +366,7 @@
       // 子导航选择
       selectSub(key) {
         this.default1 = Number(key) + 1
-        this.navIndex = Number(key)||0;
+        this.navIndex = Number(key)||Number(0);
         this.tableData = [];
         this.tableArr = [];
         this.arr = [];
@@ -506,8 +501,9 @@
       // 获取模块内字段参数
       getParam(url, params) {
         this.$axios.post(url, params).then(res => {
-          if (res.data.code == '0') {
+          if (res.data.code == 0) {
             this.default1 = '1';
+
             if (res.data.data.navList.length > 0) {
               res.data.data.navList.forEach(item => {
                 item.subnameOne = item.name.split(' ')[0];
@@ -642,7 +638,7 @@
 
               this.sideOpt = this.sideData[0].fields[0].fields[0].id || '';
               this.sideModelName = this.sideData[0].fields[0].fields[0].name || '';
-
+              this.$forceUpdate();
               let url = this.sideData[0].fields[0].fields[0].url || '';
               let param = {
                 id: this.sideOpt
