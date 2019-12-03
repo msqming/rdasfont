@@ -648,10 +648,10 @@
 
     watch: {
       value2(newVal) {
-        console.log(newVal)
-        if(newVal==[]){
+        if(newVal.length==0||newVal==''){
           return
         }
+
         let data = {
           startTime:parseTime(newVal[0]).substr(0,10),
           endTime:parseTime(newVal[1]).substr(0,10)
