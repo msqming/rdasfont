@@ -111,7 +111,7 @@
                 <div class="flex align-center">
                   <div class="padding-lr-xs flex align-center justify-center text-center flex-direction pointer "
                        :class="index+1==default1?'border-bottom-cyan':''"
-                       v-for="(item,index) in sideModelParams.navList" :key="index"
+                       v-for="(item,index) in sideModelParams.navList" :key="item.name"
                        style="width: 100px;min-height: 60px;"
                        @click="selectSub(index)">
                     <div :class="index+1==default1?'text-cyan medium text-blod':''">{{item.subnameOne}}</div>
@@ -349,7 +349,7 @@
 
       // 监听上传组件是否上传完成
       doneUpload(){
-        this.value2=[];
+        this.value2='';
         this.getvisitor(this.tableUrl)
       },
 
@@ -410,10 +410,11 @@
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
-      // 跳转页
+      // 切换页码
       handleCurrentChange(val) {
         let api_url = this.tableUrl + '?page=' + val;
-        if(this.value2!==''||this.value2.length>0){
+        if(this.value2.length>0||this.value2!==''){
+          console.log(this.value2)
           let data = {
             startTime:parseTime(this.value2[0]).substr(0,10),
             endTime:parseTime(this.value2[1]).substr(0,10)
