@@ -20,7 +20,7 @@ module.exports = {
     proxy: {
       '/api': {
         // target: 'http://xcx.ap-edu.club/', //对应自己的接口
-        target: 'http://19.87.12.184:8000/', //对应自己的接口
+        target: 'http://19.87.12.100:8000/', //对应自己的接口
         changeOrigin: true,
         ws: true,
         pathRewrite: {
