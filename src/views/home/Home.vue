@@ -549,13 +549,13 @@
             if(data){
               for (let i in res.data.results.all_data) {
                 res.data.results.all_data[i].id =Number(i) + 1;
-                res.data.results.all_data[i].date_t =  res.data.results.all_data[i].date_t.replace('T',' ')
+                res.data.results.all_data[i].date_t = res.data.results.all_data[i].date_t.replace('T',' ')
               }
               that.allData = res.data.results.all_data;
             }
             for (let i in res.data.results.data) {
               res.data.results.data[i].id = Number(this.currentPage-1)*20+Number(i) + 1;
-              res.data.results.data[i].date_t =  res.data.results.data[i].date_t.replace('T',' ')
+              res.data.results.data[i].date_t = res.data.results.data[i].date_t.replace('T',' ')
             }
             that.tableData = res.data.results.data;
             let arr = [];//存储表格头数据

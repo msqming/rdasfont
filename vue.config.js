@@ -14,13 +14,13 @@ module.exports = {
   devServer: {
     // open: process.platform === 'darwin',
     // host: 'http://localhost:8080/',
-
     port: 8000,
     open: true, //配置自动启动浏览器
     proxy: {
       '/api': {
-        // target: 'http://112.74.15.118:8000/', //对应自己的接口
-        target: 'http://19.87.12.237:8000/', //对应自己的接口
+
+        target: 'http://112.74.15.118:8000/', //对应自己的接口
+        // target: 'http://19.87.12.237:8000/', //对应自己的接口
         changeOrigin: true,
         ws: true,
         pathRewrite: {
