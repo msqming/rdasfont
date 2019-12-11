@@ -474,9 +474,10 @@
         let arr = that.arr;
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
         let day = new Date();
-        day = parseTime(day);
+        day = parseTime(day).substr(0,10);
+        console.log(day)
         let subname = that.sideModelParams.navList[that.navIndex].name;
-        let dateName = `${that.sideModelName} ${subname} ${day}`
+        let dateName = `${subname} ${day}`
         let newArr = []
         let newArr2 = []
         for (let i in arr) {
@@ -547,13 +548,13 @@
           if (res.data.results.code == 0) {
             if(data){
               for (let i in res.data.results.all_data) {
-                res.data.results.all_data[i].id = Number(i) + 1;
+                res.data.results.all_data[i].id =Number(i) + 1;
                 res.data.results.all_data[i].date_t =  res.data.results.all_data[i].date_t.replace('T',' ')
               }
               that.allData = res.data.results.all_data;
             }
             for (let i in res.data.results.data) {
-              res.data.results.data[i].id = Number(i) + 1;
+              res.data.results.data[i].id = Number(this.currentPage-1)*20+Number(i) + 1;
               res.data.results.data[i].date_t =  res.data.results.data[i].date_t.replace('T',' ')
             }
             that.tableData = res.data.results.data;
