@@ -64,6 +64,8 @@ export function json2excel (tableJson, filenames, autowidth, bookTypes) {
       dataArr.push(formatJson(tableJson[i].filterVal, tableJson[i].tableDatas))
       sheetnames.push(tableJson[i].sheetName)
     }
+    console.log(sheetnames)
+
     excel.export_json_to_excel({
       header: tHeader,
       data: dataArr,
@@ -72,6 +74,8 @@ export function json2excel (tableJson, filenames, autowidth, bookTypes) {
       autoWidth: autowidth,
       bookType: bookTypes
     })
+  }).catch(res=>{
+    console.log(res)
   })
 }
 // 数据过滤，时间过滤

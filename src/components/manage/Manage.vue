@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  import {parseTime} from "common/utils/setMethods.js";
   export default {
     name: "Manage",
     props: ['manageModel'],
@@ -57,8 +58,8 @@
           if (res.data.code == 0) {
             for(let i in res.data.data){
               let timer = res.data.data[i].create_date
-              let d = new Date(timer);
-              let times=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+              let times = parseTime(new Date(timer));
+
               res.data.data[i].create_date = times
             }
 
@@ -74,22 +75,42 @@
       // 删除管理数据
       deleteRow(idx, rows) {
         console.log(idx, rows)
-        let tabId;
-        this.manageList.forEach((item, index) => {
-          if (index == idx) {
-            tabId = item.id
+        this.$msgbox({
+          title:'删除提示',
+          message:'是否删除该条数据？',
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '执行中...';
+              let tabId;
+              this.manageList.forEach((item, index) => {
+                if (index == idx) {
+                  tabId = item.id
+                }
+              })
+              console.log(tabId)
+              let pram = {tabId: tabId}
+              this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
+                if (res.data.code == 0) {
+                  rows.splice(idx, 1);
+                } else {
+                  this.$message.error(`操作失败${res.data.msg}`);
+                }
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 100);
+              }).catch(res => {
+                console.log(res)
+              })
+
+            } else {
+              done();
+            }
           }
-        })
-        console.log(tabId)
-        let pram = {tabId: tabId}
-        this.$axios.delete('/api/v1/uploadlog/', {data: pram}).then(res => {
-          if (res.data.code == 0) {
-            rows.splice(idx, 1);
-          } else {
-            this.$message.error(`操作失败${res.data.msg}`);
-          }
-        }).catch(res => {
-          console.log(res)
         })
       },
     },

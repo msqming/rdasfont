@@ -16,7 +16,7 @@
       </el-tag>
 
       <div
-          class="checkmore margin-bottom-sm pointer text-center margin-right-xs"
+          class="checkmore-close margin-bottom-sm pointer text-center margin-right-xs"
           v-if="tags.length>8&showmore"
           @click="closeMore"
       >
@@ -114,6 +114,16 @@
   }
 
    .checkmore {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    color: #1cbbb4;
+    background-color: #ecf5ff;
+    padding: 0 10px;
+    line-height: 30px;
+    margin-bottom: 20px;
+  }
+  .checkmore-close {
     position: absolute;
     right: 0;
     bottom: 0px;

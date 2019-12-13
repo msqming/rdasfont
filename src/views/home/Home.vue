@@ -473,11 +473,14 @@
         }
         let arr = that.arr;
         // 给下载的表命名，命名规则：模块名+第几页的数据+当前时间
-        let day = new Date();
-        day = parseTime(day).substr(0,10);
-        console.log(day)
+        let day1 = parseTime(this.value2[0]).substr(0,10);
+        let day2 = parseTime(this.value2[1]).substr(0,10);
         let subname = that.sideModelParams.navList[that.navIndex].name;
-        let dateName = `${subname} ${day}`
+        if(subname.length>=10){
+          day1 = day1.substr(2,10);
+          day2 = day2.substr(2,10)
+        }
+        let dateName = `${subname}${day1}至${day2}`
         let newArr = []
         let newArr2 = []
         for (let i in arr) {
@@ -549,13 +552,13 @@
             if(data){
               for (let i in res.data.results.all_data) {
                 res.data.results.all_data[i].id =Number(i) + 1;
-                res.data.results.all_data[i].date_t = res.data.results.all_data[i].date_t.replace('T',' ')
+                res.data.results.all_data[i].date_t = res.data.results.all_data[i].date_t.replace('T',' ').substr(0,10)
               }
               that.allData = res.data.results.all_data;
             }
             for (let i in res.data.results.data) {
               res.data.results.data[i].id = Number(this.currentPage-1)*20+Number(i) + 1;
-              res.data.results.data[i].date_t = res.data.results.data[i].date_t.replace('T',' ')
+              res.data.results.data[i].date_t = res.data.results.data[i].date_t.replace('T',' ').substr(0,10)
             }
             that.tableData = res.data.results.data;
             let arr = [];//存储表格头数据

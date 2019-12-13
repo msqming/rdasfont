@@ -207,6 +207,7 @@ export function export_json_to_excel({
   }
 
   /* add worksheet to workbook */
+  console.log(ws_name,'ws_name')
   for (var k = 0; k < header.length; k++) {
     wb.SheetNames.push(ws_name[k])
     wb.Sheets[ws_name[k]] = ws[k]
