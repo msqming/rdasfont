@@ -20,7 +20,7 @@ module.exports = {
       '/api': {
 
         target: 'http://112.74.15.118:8000/', //对应自己的接口
-        // target: 'http://19.87.12.237:8000/', //对应自己的接口
+        // target: 'http://10.10.11.208:8000/', //对应自己的接口
         changeOrigin: true,
         ws: true,
         pathRewrite: {

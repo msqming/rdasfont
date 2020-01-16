@@ -19,7 +19,7 @@ Vue.config.productionTip = false
 // axios.defaults.timeout = 5000 // 请求超时
 // axios.defaults.baseURL = '/api'
 
-// axios.defaults.baseURL = 'http://19.87.12.237:8000/' // api 即上面 vue.config.js 中配置的地址
+// axios.defaults.baseURL = 'http://10.10.11.208:8000/' // api 即上面 vue.config.js 中配置的地址
 axios.defaults.baseURL = 'http://112.74.15.118:8000/' // api 即上面 vue.config.js 中配置的地址
 
 // 路由守卫
